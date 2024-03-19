@@ -10,11 +10,18 @@ import {
   updateProfile,
 } from "../controllers/userControllers";
 
+// Validators Imports
+import {
+  loginValidator,
+  signupValidator,
+  updateProfileValidator,
+} from "../middlewares/validators/userValidators";
+
 const router = express.Router();
 
 // Public Routes
-router.post("/login", loginUser);
-router.post("/signup", signupUser);
+router.post("/login", loginValidator, loginUser);
+router.post("/signup", signupValidator, signupUser);
 
 // Private Routes
 router.post("/logout", logoutUser);
@@ -22,6 +29,6 @@ router.post("/delete", deleteUser);
 router
   .route("/profile")
   .get(profileData)
-  .post(updateProfile);
+  .post(updateProfileValidator, updateProfile);
 
 export default router;
