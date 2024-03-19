@@ -13,15 +13,14 @@ const loginValidator = [
     .escape(),
   body("password", "Please Enter A Password")
     .trim()
-    .isStrongPassword({ minLength: 6, minNumbers: 1 })
-    .withMessage(
-      "Password must be at least 6 letters with 1 number"
-    )
+    .isString()
+    .isLength({ min: 6 })
+    .withMessage("Password must have at least 6 letters")
     .escape(),
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(401);
+      res.status(422);
       res.json({
         message: "Validation Error",
         error: errors.array(),
@@ -39,7 +38,7 @@ const signupValidator = [
     .isLength({ min: 3 })
     .withMessage("Must be at least 3 letters")
     .escape(),
-  body("lastname", "Please enter a last name")
+  body("lastName", "Please enter a last name")
     .notEmpty()
     .trim()
     .isLength({ min: 3 })
@@ -56,15 +55,14 @@ const signupValidator = [
     .escape(),
   body("password", "Please enter a first name")
     .trim()
-    .isStrongPassword({ minLength: 6, minNumbers: 1 })
-    .withMessage(
-      "Password must be at least 6 letters with 1 number"
-    )
+    .isString()
+    .isLength({ min: 6 })
+    .withMessage("Password must have at least 6 letters")
     .escape(),
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(401);
+      res.status(422);
       res.json({
         message: "Validation Error",
         error: errors.array(),
@@ -99,22 +97,20 @@ const updateProfileValidator = [
     .escape(),
   body("currentPassword", "Please enter a first name")
     .trim()
-    .isStrongPassword({ minLength: 6, minNumbers: 1 })
-    .withMessage(
-      "Password must be at least 6 letters with 1 number"
-    )
+    .isString()
+    .isLength({ min: 6 })
+    .withMessage("Password must have at least 6 letters")
     .escape(),
   body("newPassword", "Please enter a first name")
     .trim()
-    .isStrongPassword({ minLength: 6, minNumbers: 1 })
-    .withMessage(
-      "Password must be at least 6 letters with 1 number"
-    )
+    .isString()
+    .isLength({ min: 6 })
+    .withMessage("Password must have at least 6 letters")
     .escape(),
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(401);
+      res.status(422);
       res.json({
         message: "Validation Error",
         error: errors.array(),

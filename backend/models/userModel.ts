@@ -1,4 +1,5 @@
 import mongoose, { Types } from "mongoose";
+import bcrypt from "bcryptjs";
 
 type UserProps = {
   firstName: string;
@@ -6,6 +7,7 @@ type UserProps = {
   email: string;
   password: string;
   savedBooks: [Types.ObjectId];
+  checkPassword: (givenPassword: string) => void;
 };
 
 const userSchema = new mongoose.Schema<UserProps>({
@@ -34,6 +36,30 @@ const userSchema = new mongoose.Schema<UserProps>({
     type: [Types.ObjectId],
   },
 });
+
+userSchema.pre("save", async function (next) {
+  const hashedPassword = await bcrypt.hash(
+    this.password,
+    10
+  );
+  if (hashedPassword) {
+    this.password = hashedPassword;
+    next();
+  } else {
+    throw new Error("Something went wrong");
+  }
+});
+
+userSchema.method(
+  "checkPassword",
+  async function (givenPassword: string) {
+    const comparePasswrod = await bcrypt.compare(
+      givenPassword,
+      this.password
+    );
+    return comparePasswrod;
+  }
+);
 
 const User = mongoose.model<UserProps>("users", userSchema);
 export default User;
