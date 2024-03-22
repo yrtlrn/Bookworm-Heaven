@@ -135,6 +135,10 @@ const updateProfile = asyncHandler(
       newPassword,
     } = req.body;
 
+    if (!firstName || !lastName || !email || !currentPassword) {
+      res.status(422).json({message: 'Please enter all the required fields'})
+    }
+
     const user = await User.findById(req.session.userId);
 
     // User Exist Check

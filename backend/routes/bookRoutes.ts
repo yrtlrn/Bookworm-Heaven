@@ -12,6 +12,8 @@ import {
   saveBookToUser,
   updateBook,
 } from "../controllers/bookController";
+import { authorizedCheck } from "../middlewares/authorizedCheck";
+import { addNewBookValidator } from "../middlewares/validators/bookValidators";
 
 const router = express.Router();
 
@@ -25,12 +27,20 @@ router.get("/detail", getBookDetail);
 // Private Routes
 router
   .route("/book")
-  .post(addNewBook)
-  .delete(deleteBook)
-  .put(updateBook);
+  .post(authorizedCheck, addNewBookValidator, addNewBook)
+  .delete(authorizedCheck, deleteBook)
+  .put(authorizedCheck, updateBook);
 
-router.post("/user/save", saveBookToUser);
-router.post("/user/remove", removeBookFromUser);
-router.get("/user/books", getAllUserSavedBooks);
+router.post("/user/save", authorizedCheck, saveBookToUser);
+router.delete(
+  "/user/remove",
+  authorizedCheck,
+  removeBookFromUser
+);
+router.get(
+  "/user/books",
+  authorizedCheck,
+  getAllUserSavedBooks
+);
 
 export default router;

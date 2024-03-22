@@ -1,6 +1,16 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import Book from "../models/bookModel";
+import { ObjectId, Types } from "mongoose";
+import User from "../models/userModel";
+import session from "express-session";
+
+declare module "express-session" {
+  export interface SessionData {
+    authorized: boolean;
+    userId: Types.ObjectId;
+  }
+}
 
 // DESC     Get All Book
 // MTD      GET /api/v1/books/
@@ -16,7 +26,7 @@ const getAllBooks = asyncHandler(
     const books = await Book.find(queryOptions)
       .skip(skip)
       .limit(limit)
-      .select("-description");
+      .select("-description -__v");
 
     if (!books) {
       res
@@ -43,7 +53,36 @@ const getAllBooks = asyncHandler(
 // ACC      Public
 const getTrendingBooks = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({ message: "Get Trending Books" });
+    const queryOptions = constructSearchQuery(req.query);
+
+    const page = req.query.page || 1;
+    const limit = 10;
+    const skip = (page as number) * 10 - 10;
+
+    queryOptions.type = "Trending";
+
+    const books = await Book.find(queryOptions)
+      .skip(skip)
+      .limit(limit)
+      .select("-description -__v");
+
+    if (!books) {
+      res
+        .status(500)
+        .json({ message: "Something went wrong" });
+    }
+
+    const bookCount = await Book.find(
+      queryOptions
+    ).countDocuments();
+
+    res.status(200).json({
+      data: books,
+      pagination: {
+        totalBooks: bookCount,
+        totalPages: Math.ceil(bookCount / 10),
+      },
+    });
   }
 );
 
@@ -52,7 +91,36 @@ const getTrendingBooks = asyncHandler(
 // ACC      Public
 const getPopularBooks = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({ message: "Get Popular Books" });
+    const queryOptions = constructSearchQuery(req.query);
+
+    const page = req.query.page || 1;
+    const limit = 10;
+    const skip = (page as number) * 10 - 10;
+
+    queryOptions.type = "Most Popular";
+
+    const books = await Book.find(queryOptions)
+      .skip(skip)
+      .limit(limit)
+      .select("-description -__v");
+
+    if (!books) {
+      res
+        .status(500)
+        .json({ message: "Something went wrong" });
+    }
+
+    const bookCount = await Book.find(
+      queryOptions
+    ).countDocuments();
+
+    res.status(200).json({
+      data: books,
+      pagination: {
+        totalBooks: bookCount,
+        totalPages: Math.ceil(bookCount / 10),
+      },
+    });
   }
 );
 
@@ -61,16 +129,52 @@ const getPopularBooks = asyncHandler(
 // ACC      Public
 const getLatestBooks = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({ message: "Get Latest Books" });
+    const queryOptions = constructSearchQuery(req.query);
+
+    const page = req.query.page || 1;
+    const limit = 10;
+    const skip = (page as number) * 10 - 10;
+
+    queryOptions.type = "Latest";
+
+    const books = await Book.find(queryOptions)
+      .skip(skip)
+      .limit(limit)
+      .select("-description -__v");
+
+    if (!books) {
+      res
+        .status(500)
+        .json({ message: "Something went wrong" });
+    }
+
+    const bookCount = await Book.find(
+      queryOptions
+    ).countDocuments();
+
+    res.status(200).json({
+      data: books,
+      pagination: {
+        totalBooks: bookCount,
+        totalPages: Math.ceil(bookCount / 10),
+      },
+    });
   }
 );
 
 // DESC     Get books's detail
-// MTD      GET /api/v1/books/book
+// MTD      GET /api/v1/books/deatil
 // ACC      Public
 const getBookDetail = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({ message: "Get Book's detail" });
+    const book = await Book.findById(req.query.bookId);
+
+    if (!book) {
+      res
+        .status(404)
+        .json({ message: "Book does not exist" });
+    }
+    res.status(200).json(book);
   }
 );
 
@@ -79,7 +183,16 @@ const getBookDetail = asyncHandler(
 // ACC      Private
 const addNewBook = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({ message: "Add New Book" });
+    const addedBook = await Book.create(req.body);
+
+    if (!addedBook) {
+      res
+        .status(500)
+        .json({ message: "Something went wrong" });
+    }
+    res
+      .status(201)
+      .json({ message: "Book added successfully" });
   }
 );
 
@@ -88,7 +201,19 @@ const addNewBook = asyncHandler(
 // ACC      Private
 const deleteBook = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({ message: "Delete A Book" });
+    const deleteBook = await Book.findByIdAndDelete(
+      req.body.bookId
+    );
+
+    if (!deleteBook) {
+      res
+        .status(500)
+        .json({ message: "Something went wrong" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Book deleted successfully" });
   }
 );
 
@@ -97,7 +222,44 @@ const deleteBook = asyncHandler(
 // ACC      Private
 const updateBook = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({ message: "Update a book" });
+    const {
+      title,
+      reviews,
+      price,
+      stars,
+      imgUrl,
+      description,
+      type,
+    } = req.body;
+
+    if (
+      !title ||
+      !reviews ||
+      !price ||
+      !stars ||
+      !imgUrl ||
+      !description ||
+      !type
+    ) {
+      res.status(422).json({
+        message: "Please enter all the required fields",
+      });
+    }
+
+    const updatedBook = await Book.findByIdAndUpdate(
+      req.query.bookId,
+      req.body
+    );
+
+    if (!updatedBook) {
+      res
+        .status(500)
+        .json({ message: "Something went wrong" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Book Updated Successfully" });
   }
 );
 
@@ -106,7 +268,46 @@ const updateBook = asyncHandler(
 // ACC      Private
 const saveBookToUser = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({ message: "Save book to user" });
+    const bookId = req.query.bookId;
+    const userId = req.session.userId;
+
+    const user = await User.findById(userId);
+    const book = await Book.findById(bookId);
+
+    if (!user) {
+      res
+        .status(404)
+        .json({ message: "User does not exist" });
+      return;
+    }
+
+    if (!book) {
+      res
+        .status(404)
+        .json({ message: "Book does not exist" });
+      return;
+    }
+
+    if (
+      user.savedBooks.includes(
+        new Types.ObjectId(bookId as string)
+      )
+    ) {
+      res
+        .status(400)
+        .json({ message: "Book is already saved" });
+      return;
+    }
+    if (user && book) {
+      user.savedBooks.push(book._id);
+      await user.save();
+      res.status(200).json({ message: "Book Saved" });
+      return;
+    }
+
+    res
+      .status(500)
+      .json({ message: "Something went wrong" });
   }
 );
 
@@ -115,9 +316,51 @@ const saveBookToUser = asyncHandler(
 // ACC      Private
 const removeBookFromUser = asyncHandler(
   async (req: Request, res: Response) => {
+    const bookId = req.query.bookId;
+
+    const bookObjectId = new Types.ObjectId(
+      bookId as string
+    );
+
+    const user = await User.findById(req.session.userId);
+    const book = await Book.findById(bookId);
+
+    if (!user) {
+      res
+        .status(404)
+        .json({ message: "User does not exist" });
+    }
+
+    if (!book) {
+      res
+        .status(404)
+        .json({ message: "Book does not exist" });
+    }
+
+    if (user) {
+      if (
+        user.savedBooks.includes(
+          new Types.ObjectId(bookId as string)
+        )
+      ) {
+        user.savedBooks = user.savedBooks.filter(
+          (book) => !book.equals(bookObjectId)
+        ) as [Types.ObjectId];
+        await user.save();
+        res
+          .status(200)
+          .json({ message: "Book removed from save" });
+        return;
+      } else {
+        res
+          .status(422)
+          .json({ message: "Book is not saved" });
+        return;
+      }
+    }
     res
-      .status(200)
-      .json({ message: "Remove book from user" });
+      .status(500)
+      .json({ message: "Something went wrong" });
   }
 );
 
@@ -126,9 +369,14 @@ const removeBookFromUser = asyncHandler(
 // ACC      Private
 const getAllUserSavedBooks = asyncHandler(
   async (req: Request, res: Response) => {
-    res
-      .status(200)
-      .json({ message: "Get all saved books from user" });
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      res
+        .status(404)
+        .json({ message: "User does not exist" });
+      return;
+    }
+    res.status(200).json({ data: user.savedBooks });
   }
 );
 
