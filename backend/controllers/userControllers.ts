@@ -1,8 +1,19 @@
 import asyncHandler from "express-async-handler";
 import { Request, Response } from "express";
 import User from "../models/userModel";
+import session from "express-session";
+import { Types } from "mongoose";
+import { authorizeSession } from "../utils/authorizeSession";
+import { destroySession } from "../utils/destroySession";
 
-// DESC     User log in
+declare module "express-session" {
+  export interface SessionData {
+    authorized: boolean;
+    userId: Types.ObjectId;
+  }
+}
+
+// DESC     Log in user
 // MTD      POST /api/v1/users/login
 // ACC      Public
 const loginUser = asyncHandler(
@@ -18,15 +29,18 @@ const loginUser = asyncHandler(
     }
 
     if (await user?.checkPassword(req.body.password)) {
-        res.status(200).json({message: 'Login In Successful'})
-        return
+      authorizeSession(req, user!._id);
+      res
+        .status(200)
+        .json({ message: "Login In Successful" });
+      return;
     }
-    res.status(500)
-    throw new Error("Error: Could not log in")
+    res.status(400);
+    throw new Error("Email or Password is incorrect.");
   }
 );
 
-// DESC     User sign up
+// DESC     Sign up user
 // MTD      POST /api/v1/users/signup
 // ACC      Public
 const signupUser = asyncHandler(
@@ -48,39 +62,140 @@ const signupUser = asyncHandler(
       res.status(500);
       throw new Error("Error: Could not sign up");
     }
+    authorizeSession(req, user._id);
     res.status(201).json({ message: "Sign Up Successful" });
   }
 );
 
-// DESC     User logout
+// DESC     Logout user
 // MTD      POST /api/v1/users/logout
 // ACC      Private
 const logoutUser = (req: Request, res: Response) => {
+  destroySession(req, res);
   res.status(200).json({ message: "Logout User" });
 };
 
-// DESC     User log in
+// DESC     User can delete their account
 // MTD      POST /api/v1/users/delete
 // ACC      Private
-const deleteUser = (req: Request, res: Response) => {
-  res.status(200).json({ message: "Delete User" });
-};
+const deleteUser = asyncHandler(
+  async (req: Request, res: Response) => {
+    const userId = req.session.userId;
 
-// DESC     User log in
+    if (!userId) {
+      res
+        .status(400)
+        .json({ message: "Something went wrong" });
+    }
+
+    const deleted = await User.deleteOne({ _id: userId });
+
+    if (!deleted) {
+      res
+        .status(500)
+        .json({ message: "Something went wrong" });
+    }
+
+    destroySession(req, res);
+    res
+      .status(200)
+      .json({ message: "Account has been deleted" });
+  }
+);
+
+// DESC     Send user's profile data
 // MTD      GET /api/v1/users/profile
 // ACC      Private
-const profileData = (req: Request, res: Response) => {
-  res.status(200).json({ message: "Profile Data User" });
-};
+const profileData = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user = await User.findById(
+      req.session.userId
+    ).select("-password -_id -savedBooks -__v ");
 
-// DESC     User log in
+    if (!user) {
+      res
+        .status(404)
+        .json({ message: "Something went wrong" });
+    }
+
+    res.status(200).json(user);
+  }
+);
+
+// DESC     Update user's profile data
 // MTD      POST /api/v1/users/profile
 // ACC      Private
-const updateProfile = (req: Request, res: Response) => {
-  res
-    .status(200)
-    .json({ message: "Update Profile Data User" });
-};
+const updateProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const {
+      firstName,
+      lastName,
+      email,
+      currentPassword,
+      newPassword,
+    } = req.body;
+
+    const user = await User.findById(req.session.userId);
+
+    // User Exist Check
+    if (!user) {
+      res
+        .status(404)
+        .json({ message: "User does nto exist" });
+    }
+
+    if (await user?.checkPassword(currentPassword)) {
+      const duplicateEmail = await User.findOne({
+        email,
+        _id: { $ne: req.session.userId },
+      });
+
+      if (duplicateEmail) {
+        res.status(422).json({
+          message: "Please select a different email.",
+        });
+        return;
+      }
+
+      let newUserData = {};
+      if (newPassword) {
+        newUserData = {
+          firstName,
+          lastName,
+          email,
+          password: newPassword,
+        };
+      } else {
+        newUserData = {
+          firstName,
+          lastName,
+          email,
+        };
+      }
+
+      const updatedData = await User.findByIdAndUpdate(
+        req.session.userId,
+        newUserData
+      );
+
+      if (!updatedData) {
+        res
+          .status(500)
+          .json({ message: "Something went wrong" });
+        return;
+      }
+
+      res
+        .status(200)
+        .json({ message: "Update Profile Data User" });
+      return;
+    }
+
+    res
+      .status(400)
+      .json({ message: "Incorrect Password" });
+  }
+);
 
 export {
   loginUser,

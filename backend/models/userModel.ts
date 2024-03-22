@@ -61,5 +61,19 @@ userSchema.method(
   }
 );
 
+userSchema.pre("findOneAndUpdate", async function (next) {
+  const updateData = JSON.parse(
+    JSON.stringify(this.getUpdate())
+  );
+  if (updateData.password) {
+    const hashedPassword = await bcrypt.hash(
+      updateData.password,
+      10
+    );
+    this.set({ password: hashedPassword });
+  }
+  next();
+});
+
 const User = mongoose.model<UserProps>("users", userSchema);
 export default User;

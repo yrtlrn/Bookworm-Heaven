@@ -16,6 +16,7 @@ import {
   signupValidator,
   updateProfileValidator,
 } from "../middlewares/validators/userValidators";
+import { authorizedCheck } from "../middlewares/authorizedCheck";
 
 const router = express.Router();
 
@@ -24,11 +25,15 @@ router.post("/login", loginValidator, loginUser);
 router.post("/signup", signupValidator, signupUser);
 
 // Private Routes
-router.post("/logout", logoutUser);
+router.post("/logout", authorizedCheck, logoutUser);
 router.post("/delete", deleteUser);
 router
   .route("/profile")
-  .get(profileData)
-  .post(updateProfileValidator, updateProfile);
+  .get(authorizedCheck, profileData)
+  .post(
+    authorizedCheck,
+    updateProfileValidator,
+    updateProfile
+  );
 
 export default router;

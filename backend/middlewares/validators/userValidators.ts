@@ -80,7 +80,7 @@ const updateProfileValidator = [
     .isLength({ min: 3 })
     .withMessage("Must be at least 3 letters")
     .escape(),
-  body("lastname", "Please enter a last name")
+  body("lastName", "Please enter a last name")
     .notEmpty()
     .trim()
     .isLength({ min: 3 })
@@ -102,6 +102,7 @@ const updateProfileValidator = [
     .withMessage("Password must have at least 6 letters")
     .escape(),
   body("newPassword", "Please enter a first name")
+    .optional({ values: "falsy" })
     .trim()
     .isString()
     .isLength({ min: 6 })
