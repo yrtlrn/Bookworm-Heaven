@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 type BookProps = {
   title: string;
   type: string;
-  stars: string;
-  reviews: string;
-  price: string;
+  stars: number;
+  reviews: number;
+  price: number;
   imgUrl: string;
   description: string;
 };
@@ -17,18 +17,18 @@ const bookSchema = new mongoose.Schema<BookProps>({
   },
   type: {
     type: "string",
-    default: "NO TYPE"
+    default: "NO TYPE",
   },
   stars: {
-    type: "string",
+    type: "number",
     required: true,
   },
   reviews: {
-    type: "string",
+    type: "number",
     required: true,
   },
   price: {
-    type: "string",
+    type: "number",
     required: true,
   },
   imgUrl: {
@@ -42,6 +42,6 @@ const bookSchema = new mongoose.Schema<BookProps>({
   },
 });
 
-const Book = mongoose.model("books", bookSchema);
+const Book = mongoose.model<BookProps>("books", bookSchema);
 
 export default Book;

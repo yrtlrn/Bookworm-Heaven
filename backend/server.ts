@@ -1,5 +1,5 @@
 // Packages imports
-import express, { Request, Response } from "express";
+import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import session from "express-session";
@@ -25,6 +25,7 @@ import { corsConfig } from "./config/corsConfig";
 import { sessionConfig } from "./config/sessionConfig";
 import { limiterConfig } from "./config/limiterConfig";
 
+
 // Express middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -45,8 +46,11 @@ app.use("/api/v1/books", bookRouters);
 app.use(pageNotFound);
 app.use(errorHandler);
 
+
+
 // Server Function
 const startServer = async () => {
+  
   try {
     await connectDB();
     app.listen(process.env.PORT, () =>

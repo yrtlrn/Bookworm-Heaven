@@ -1,3 +1,4 @@
+// @ts-ignore
 import MongoStore from "rate-limit-mongo";
 
 

@@ -1,12 +1,40 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
+import Book from "../models/bookModel";
 
 // DESC     Get All Book
 // MTD      GET /api/v1/books/
 // ACC      Public
 const getAllBooks = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({ message: "Get All Books" });
+    const queryOptions = constructSearchQuery(req.query);
+
+    const page = req.query.page || 1;
+    const limit = 10;
+    const skip = (page as number) * 10 - 10;
+
+    const books = await Book.find(queryOptions)
+      .skip(skip)
+      .limit(limit)
+      .select("-description");
+
+    if (!books) {
+      res
+        .status(500)
+        .json({ message: "Something went wrong" });
+    }
+
+    const bookCount = await Book.find(
+      queryOptions
+    ).countDocuments();
+
+    res.status(200).json({
+      data: books,
+      pagination: {
+        totalBooks: bookCount,
+        totalPages: Math.ceil(bookCount / 10),
+      },
+    });
   }
 );
 
@@ -103,6 +131,44 @@ const getAllUserSavedBooks = asyncHandler(
       .json({ message: "Get all saved books from user" });
   }
 );
+
+const constructSearchQuery = (searchQuery: any) => {
+  let constructedQuery: any = {};
+
+  // Specific Star
+  if (searchQuery.star) {
+    constructedQuery.stars = searchQuery.star;
+  }
+
+  // Star Min and Max
+  if (searchQuery.starMin || searchQuery.starMax) {
+    constructedQuery.stars = {
+      $lte: searchQuery.starMax ? searchQuery.starMax : 5,
+      $gte: searchQuery.starMin ? searchQuery.starMin : 0,
+    };
+  }
+
+  // Specific Type
+  if (searchQuery.type) {
+    constructedQuery.type = searchQuery.type;
+  }
+
+  // Specific Price
+  if (searchQuery.price) {
+    constructedQuery.price = searchQuery.price;
+  }
+  // Price Min and Max
+  if (searchQuery.priceMin || searchQuery.priceMax) {
+    constructedQuery.price = {
+      $lte: searchQuery.priceMax
+        ? searchQuery.priceMax
+        : "",
+      $gte: searchQuery.priceMin ? searchQuery.priceMin : 0,
+    };
+  }
+
+  return constructedQuery;
+};
 
 export {
   getAllBooks,
