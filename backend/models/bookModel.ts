@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 type BookProps = {
   title: string;
+  type: string;
   stars: string;
   reviews: string;
   price: string;
@@ -13,7 +14,10 @@ const bookSchema = new mongoose.Schema<BookProps>({
   title: {
     type: "string",
     required: true,
-    minlength: 3,
+  },
+  type: {
+    type: "string",
+    default: "NO TYPE"
   },
   stars: {
     type: "string",

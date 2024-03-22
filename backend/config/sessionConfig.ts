@@ -1,6 +1,5 @@
 import { default as connectMongoDBSession } from "connect-mongodb-session";
 import session from "express-session";
-import { Types } from "mongoose";
 
 
 const MongoDBSession = connectMongoDBSession(session);

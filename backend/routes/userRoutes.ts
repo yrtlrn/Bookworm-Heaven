@@ -26,11 +26,11 @@ router.post("/signup", signupValidator, signupUser);
 
 // Private Routes
 router.post("/logout", authorizedCheck, logoutUser);
-router.post("/delete", deleteUser);
+router.delete("/delete", deleteUser);
 router
   .route("/profile")
   .get(authorizedCheck, profileData)
-  .post(
+  .put(
     authorizedCheck,
     updateProfileValidator,
     updateProfile

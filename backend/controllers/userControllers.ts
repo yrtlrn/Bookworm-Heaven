@@ -76,7 +76,7 @@ const logoutUser = (req: Request, res: Response) => {
 };
 
 // DESC     User can delete their account
-// MTD      POST /api/v1/users/delete
+// MTD      Delete /api/v1/users/delete
 // ACC      Private
 const deleteUser = asyncHandler(
   async (req: Request, res: Response) => {
@@ -123,7 +123,7 @@ const profileData = asyncHandler(
 );
 
 // DESC     Update user's profile data
-// MTD      POST /api/v1/users/profile
+// MTD      Put /api/v1/users/profile
 // ACC      Private
 const updateProfile = asyncHandler(
   async (req: Request, res: Response) => {
