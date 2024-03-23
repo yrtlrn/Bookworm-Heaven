@@ -77,7 +77,7 @@ const NavBar = () => {
           </button>
         </section>
       </div>
-      <section className="relative">
+      <section className="relative z-[1]">
         <motion.div
           animate={navOpen ? "open" : "closed"}
           initial={{ y: -200 }}
