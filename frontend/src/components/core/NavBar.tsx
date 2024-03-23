@@ -1,27 +1,101 @@
-// Logo Import
+import { useState } from "react";
 import logoImage from "../../assets/logo.png";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
+  const [navOpen, setNavOpen] = useState(false);
+
+  const topBarVariants = {
+    open: { opacity: 1, rotate: 50, y: 15 },
+    closed: { opacity: 1 },
+  };
+  const middleBarVariants = {
+    open: { opacity: 0 },
+    closed: { opacity: 1, x: 0 },
+  };
+  const bottomBarVariants = {
+    open: { opacity: 1, rotate: -50, y: -9 },
+    closed: { opacity: 1 },
+  };
+
+  const navDropDownVariants = {
+    open: { y: 5 },
+    closed: { y: -200 },
+  };
+
+  window.onclick = function (event) {
+    if (event !== null && event.target !== null) {
+      const element = event.target as Element;
+      const isMatch = element.matches("#NavButton");
+
+      if (isMatch === false && navOpen) {
+        setNavOpen(false);
+      }
+    }
+  };
+
   return (
-    <header className="flex justify-between border-b-2">
-      <section>
-        <button className="flex flex-col items-center">
-          <img
-            src={logoImage}
-            alt="Logo Image"
-            height={50}
-            width={50}
-            className="items-center"
-          />
-          <h1 className="font-bold">Bookworm Heaven</h1>
-        </button>
-      </section>
-      <section className="flex items-center">
-        <button className="flex flex-col gap-2">
-          <div className="bg-black w-9 h-1" />
-          <div className="bg-black w-9 h-1" />
-          <div className="bg-black w-9 h-1" />
-        </button>
+    <header>
+      <div className="flex justify-between border-b-2">
+        <section>
+          <button className="flex flex-col items-center">
+            <img
+              src={logoImage}
+              alt="Logo Image"
+              height={50}
+              width={50}
+              className="items-center"
+            />
+            <h1 className="font-bold">Bookworm Heaven</h1>
+          </button>
+        </section>
+        <section className="flex items-center">
+          <button
+            className="flex flex-col gap-2"
+            onClick={() => setNavOpen((prev) => !prev)}
+            id="NavButton"
+          >
+            <motion.div
+              animate={navOpen ? "open" : "closed"}
+              variants={topBarVariants}
+              className="bg-white w-9 h-1"
+              id="NavButton"
+            />
+            <motion.div
+              animate={navOpen ? "open" : "closed"}
+              variants={middleBarVariants}
+              className="bg-white w-9 h-1"
+              id="NavButton"
+            />
+            <motion.div
+              animate={navOpen ? "open" : "closed"}
+              variants={bottomBarVariants}
+              className="bg-white w-9 h-1"
+              id="NavButton"
+            />
+          </button>
+        </section>
+      </div>
+      <section className="relative">
+        <motion.div
+          animate={navOpen ? "open" : "closed"}
+          initial={{ y: -200 }}
+          variants={navDropDownVariants}
+          className="absolute bg-base-300 rounded-box w-full h-fit flex justify-between"
+        >
+          <div className="flex flex-col p-3 gap-4 text-center">
+            <Link to="/Most-Popular-Books">
+              Most Popular
+            </Link>
+            <Link to="/Trending-Books">Trending</Link>
+            <Link to="/Latest-Books">Latest</Link>
+          </div>
+          <div className="flex flex-col p-3 gap-4 text-center">
+            <Link to="/log-in">Login</Link>
+            <Link to="/sign-up">Signup</Link>
+          </div>
+        </motion.div>
       </section>
     </header>
   );
