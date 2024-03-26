@@ -2,14 +2,33 @@ import { useState } from "react";
 
 const SearchBar = () => {
   const [titleValue, setTitleValue] = useState("");
+  const [authorValue, setAuthorValue] = useState("");
+
   return (
-    <form className="absolute top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%] ml-auto rounded-box m-1 bg-base-200 p-3 text-center">
-      <label htmlFor="title">Title</label>
+    <form className="grid w-[80%] grid-cols-3 grid-rows-2 p-2 m-1 text-center absCenter rounded-box bg-base-200 gap-3">
+      <label
+        htmlFor="title"
+        className="flex items-center justify-center"
+      >
+        Title
+      </label>
       <input
         id="title"
-        className="input mt-1 text-center"
+        className="col-span-2 mt-1 text-center input input-bordered"
         value={titleValue}
         onChange={(e) => setTitleValue(e.target.value)}
+      />
+      <label
+        htmlFor="author"
+        className="flex items-center justify-center"
+      >
+        Author
+      </label>
+      <input
+        id="author"
+        className="col-span-2 mt-1 text-center input input-bordered"
+        value={authorValue}
+        onChange={(e) => setAuthorValue(e.target.value)}
       />
     </form>
   );

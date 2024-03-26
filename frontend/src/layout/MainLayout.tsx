@@ -4,7 +4,7 @@ import Footer from "../components/core/Footer";
 
 const MainLayout = () => {
   return (
-    <section className="flex flex-col min-h-screen container px-4">
+    <section className="container flex flex-col min-w-full min-h-screen px-4 ">
       <div className="flex-none">
         <NavBar />
       </div>

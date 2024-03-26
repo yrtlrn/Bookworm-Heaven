@@ -50,7 +50,6 @@ app.use(errorHandler);
 
 // Server Function
 const startServer = async () => {
-  
   try {
     await connectDB();
     app.listen(process.env.PORT, () =>

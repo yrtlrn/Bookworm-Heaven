@@ -59,19 +59,19 @@ const NavBar = () => {
             <motion.div
               animate={navOpen ? "open" : "closed"}
               variants={topBarVariants}
-              className="bg-white w-9 h-1"
+              className="h-1 bg-white w-9"
               id="NavButton"
             />
             <motion.div
               animate={navOpen ? "open" : "closed"}
               variants={middleBarVariants}
-              className="bg-white w-9 h-1"
+              className="h-1 bg-white w-9"
               id="NavButton"
             />
             <motion.div
               animate={navOpen ? "open" : "closed"}
               variants={bottomBarVariants}
-              className="bg-white w-9 h-1"
+              className="h-1 bg-white w-9"
               id="NavButton"
             />
           </button>
@@ -82,16 +82,16 @@ const NavBar = () => {
           animate={navOpen ? "open" : "closed"}
           initial={{ y: -200 }}
           variants={navDropDownVariants}
-          className="absolute bg-base-300 rounded-box w-full h-fit flex justify-between"
+          className="absolute flex justify-between w-full bg-base-300 rounded-box h-fit"
         >
-          <div className="flex flex-col p-3 gap-4 text-center">
+          <div className="flex flex-col gap-4 p-3 text-center">
             <Link to="/Most-Popular-Books">
               Most Popular
             </Link>
             <Link to="/Trending-Books">Trending</Link>
             <Link to="/Latest-Books">Latest</Link>
           </div>
-          <div className="flex flex-col p-3 gap-4 text-center">
+          <div className="flex flex-col gap-4 p-3 text-center">
             <Link to="/log-in">Login</Link>
             <Link to="/sign-up">Signup</Link>
           </div>

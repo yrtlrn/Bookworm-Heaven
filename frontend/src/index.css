@@ -6,4 +6,10 @@
   .show {
     @apply bg-red-200;
   }
+  .absCenter {
+    @apply absolute top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%];
+  }
+  .errorText {
+    @apply text-xs text-center text-red-500
+  }
 }
