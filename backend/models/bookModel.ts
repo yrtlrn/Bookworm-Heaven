@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-type BookProps = {
+export type BookProps = {
   title: string;
   author: string;
   type: string;

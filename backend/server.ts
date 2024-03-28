@@ -25,7 +25,6 @@ import { corsConfig } from "./config/corsConfig";
 import { sessionConfig } from "./config/sessionConfig";
 import { limiterConfig } from "./config/limiterConfig";
 
-
 // Express middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -45,8 +44,6 @@ app.use("/api/v1/books", bookRouters);
 // Error Middleware
 app.use(pageNotFound);
 app.use(errorHandler);
-
-
 
 // Server Function
 const startServer = async () => {

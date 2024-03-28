@@ -1,5 +1,6 @@
 import Filter from "../components/Filter";
 import Hero from "../components/core/Hero";
+import TrendingBooksSection from "../sections/TrendingBooksSection";
 
 
 function HomePage() {
@@ -7,7 +8,7 @@ function HomePage() {
     <section className="container min-w-full px-4">
       <Hero />
       <Filter />
-      <h1>Main page</h1>
+      <TrendingBooksSection />
     </section>
   );
 }
