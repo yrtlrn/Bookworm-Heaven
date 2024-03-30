@@ -107,7 +107,7 @@ const BookCard = ({ data }: BookCardProps) => {
               />
             </figure>
             <div className="items-center p-1 text-center card-body">
-              <h2 className="w-full card-title">
+              <h2 className="card-title">
                 {data[currentIndex].title.length > 50
                   ? data[currentIndex].title.slice(0, 50) +
                     "..."

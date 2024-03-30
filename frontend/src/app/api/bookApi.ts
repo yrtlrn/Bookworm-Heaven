@@ -23,7 +23,23 @@ export const BookApi = createApi({
         method: "GET",
       }),
     }),
+    getPopularBooks: builder.query<getBook, null>({
+      query: () => ({
+        url: "/popular",
+        method: "GET",
+      }),
+    }),
+    getLatestBooks: builder.query<getBook, null>({
+      query: () => ({
+        url: "latest",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetTrendingBooksQuery } = BookApi;
+export const {
+  useGetTrendingBooksQuery,
+  useGetPopularBooksQuery,
+  useGetLatestBooksQuery,
+} = BookApi;

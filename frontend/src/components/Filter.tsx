@@ -195,7 +195,7 @@ const Filter = () => {
         </div>
 
         <button
-          className="col-span-3 text-xl border-white btn bg-base-100"
+          className="col-span-3 text-xl btn-outline btn bg-base-100"
           type="submit"
         >
           Filter Books

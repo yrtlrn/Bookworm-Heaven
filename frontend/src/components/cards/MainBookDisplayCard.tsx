@@ -1,8 +1,14 @@
-import Book from "../../../backend/models/bookModel";
-import { useGetTrendingBooksQuery } from "../app/api/bookApi";
-import BookCard from "../components/cards/BookCard";
+import BookCard from "./BookCard";
 
-const TrendingBooksSection = () => {
+type MainBooksSectionProps = {
+  title: string;
+  getBookFunction: any;
+};
+
+const MainBooksSection = ({
+  title,
+  getBookFunction,
+}: MainBooksSectionProps) => {
   let trendingBooks;
 
   const {
@@ -10,8 +16,7 @@ const TrendingBooksSection = () => {
     isLoading,
     isSuccess,
     isError,
-    error,
-  } = useGetTrendingBooksQuery(null);
+  } = getBookFunction();
 
   if (isLoading) {
     trendingBooks = (
@@ -26,9 +31,7 @@ const TrendingBooksSection = () => {
   } else if (isSuccess) {
     trendingBooks = (
       <div className="w-full my-5">
-        
-          <BookCard data={books.data} />
-        
+        <BookCard data={books.data} />
       </div>
     );
   } else if (isError) {
@@ -38,10 +41,10 @@ const TrendingBooksSection = () => {
   return (
     <section>
       <h1 className="mt-4 text-3xl font-bold text-center">
-        Trending
+        {title}
       </h1>
       {trendingBooks}
     </section>
   );
 };
-export default TrendingBooksSection;
+export default MainBooksSection;
