@@ -4,8 +4,8 @@ import Footer from "../components/core/Footer";
 
 const MainLayout = () => {
   return (
-    <section className="container flex flex-col min-w-full min-h-screen px-4 ">
-      <div className="flex-none">
+    <section className="container flex flex-col min-w-full min-h-screen ">
+      <div className="sticky -top-[1.2px] border-b-2 flex-none bg-slate-900 z-[1] ">
         <NavBar />
       </div>
       <div className="flex-1">

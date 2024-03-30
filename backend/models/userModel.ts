@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema<UserProps>({
   },
   savedBooks: {
     type: [Types.ObjectId],
+    default: []
   },
 });
 

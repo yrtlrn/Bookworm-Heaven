@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 
+
+
 const loginValidator = [
   body("email", "Please Enter An Email")
     .isLength({
@@ -67,6 +69,7 @@ const signupValidator = [
         message: "Validation Error",
         error: errors.array(),
       });
+      
       return;
     }
     next();

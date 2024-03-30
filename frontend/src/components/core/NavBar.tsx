@@ -36,18 +36,20 @@ const NavBar = () => {
   };
 
   return (
-    <header>
-      <div className="flex justify-between border-b-2">
+    <header className="px-2">
+      <div className="flex justify-between">
         <section>
-          <button className="flex flex-col items-center">
-            <img
-              src={logoImage}
-              alt="Logo Image"
-              height={50}
-              width={50}
-              className="items-center"
-            />
-            <h1 className="font-bold">Bookworm Heaven</h1>
+          <button>
+            <a className="flex flex-col items-center" href="/">
+              <img
+                src={logoImage}
+                alt="Logo Image"
+                height={50}
+                width={50}
+                className="items-center"
+              />
+              <h1 className="font-bold">Bookworm Heaven</h1>
+            </a>
           </button>
         </section>
         <section className="flex items-center">
