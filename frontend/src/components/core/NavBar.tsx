@@ -2,10 +2,15 @@ import { useState } from "react";
 import logoImage from "../../assets/logo.png";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { isUserAuthorized } from "../../app/slices/userSlice";
+import { useAppSelector } from "../../app/hooks/hook";
+import { usePostLogoutUserMutation } from "../../app/api/userApi";
+import { toast } from "react-toastify";
 
 const NavBar = () => {
   const [navOpen, setNavOpen] = useState(false);
 
+  // Nav Dropdown animation
   const topBarVariants = {
     open: { opacity: 1, rotate: 50, y: 15 },
     closed: { opacity: 1 },
@@ -24,6 +29,7 @@ const NavBar = () => {
     closed: { y: -200 },
   };
 
+  // Close Nav dropdown
   window.onclick = function (event) {
     if (event !== null && event.target !== null) {
       const element = event.target as Element;
@@ -35,12 +41,35 @@ const NavBar = () => {
     }
   };
 
+  // Check if user is authorized
+  const isAuth = useAppSelector(isUserAuthorized);
+
+  // Logout User
+  const [logoutUser] = usePostLogoutUserMutation();
+
+  const logoutFun = async () => {
+    const response = await logoutUser(null);
+
+    if ("error" in response) {
+      const knownError = response.error as {
+        data: { message: string };
+        status: number;
+      };
+      toast(knownError.data.message, { type: "error" });
+    } else {
+      toast("Logout Successful", { type: "success" });
+    }
+  };
+
   return (
     <header className="px-2">
       <div className="flex justify-between">
         <section>
           <button>
-            <a className="flex flex-col items-center" href="/">
+            <a
+              className="flex flex-col items-center"
+              href="/"
+            >
               <img
                 src={logoImage}
                 alt="Logo Image"
@@ -94,8 +123,21 @@ const NavBar = () => {
             <Link to="/Latest-Books">Latest</Link>
           </div>
           <div className="flex flex-col gap-4 p-3 text-center">
-            <Link to="/log-in">Login</Link>
-            <Link to="/sign-up">Signup</Link>
+            {isAuth ? (
+              <>
+                <Link
+                  to="/"
+                  onClick={() => logoutFun()}
+                >
+                  Logout
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/log-in">Login</Link>
+                <Link to="/sign-up">Signup</Link>
+              </>
+            )}
           </div>
         </motion.div>
       </section>

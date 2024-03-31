@@ -33,10 +33,26 @@ export const UserApi = createApi({
         body: data,
       }),
     }),
+    getAuthCheck: builder.query<null, null>({
+      query: () => ({
+        url: "/authCheck",
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+    postLogoutUser: builder.mutation<null, null>({
+      query: () => ({
+        url: "/logout",
+        method: "POST",
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
 export const {
   usePostSignupUserMutation,
   usePostLoginUserMutation,
+  useGetAuthCheckQuery,
+  usePostLogoutUserMutation,
 } = UserApi;

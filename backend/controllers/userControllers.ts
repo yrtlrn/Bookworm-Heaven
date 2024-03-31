@@ -135,8 +135,15 @@ const updateProfile = asyncHandler(
       newPassword,
     } = req.body;
 
-    if (!firstName || !lastName || !email || !currentPassword) {
-      res.status(422).json({message: 'Please enter all the required fields'})
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !currentPassword
+    ) {
+      res.status(422).json({
+        message: "Please enter all the required fields",
+      });
     }
 
     const user = await User.findById(req.session.userId);
@@ -195,11 +202,21 @@ const updateProfile = asyncHandler(
       return;
     }
 
-    res
-      .status(400)
-      .json({ message: "Incorrect Password" });
+    res.status(400).json({ message: "Incorrect Password" });
   }
 );
+
+// DESC     Check if user is authorized
+// MTD      GET /api/v1/users/profile
+// ACC      Private
+const authCheck = (req: Request, res: Response) => {
+  if (req.session.authorized) {
+    res.status(200).json({ message: "User is authorized" });
+
+  } else {
+    res.status(401).json({error: "Unauthorized"})
+  }
+};
 
 export {
   loginUser,
@@ -208,4 +225,5 @@ export {
   deleteUser,
   profileData,
   updateProfile,
+  authCheck
 };

@@ -8,6 +8,7 @@ import {
   deleteUser,
   profileData,
   updateProfile,
+  authCheck,
 } from "../controllers/userControllers";
 
 // Validators Imports
@@ -25,6 +26,7 @@ router.post("/login", loginValidator, loginUser);
 router.post("/signup", signupValidator, signupUser);
 
 // Private Routes
+router.get("/authCheck", authorizedCheck, authCheck);
 router.post("/logout", authorizedCheck, logoutUser);
 router.delete("/delete", deleteUser);
 router
