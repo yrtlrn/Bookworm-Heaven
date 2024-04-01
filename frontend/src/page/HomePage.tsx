@@ -7,8 +7,14 @@ import {
 } from "../app/api/bookApi";
 import MainBooksSection from "../components/cards/MainBookDisplayCard";
 import AddBookRequest from "../components/AddBookRequest";
+import { useGetAuthCheckQuery } from "../app/api/userApi";
+
 
 function HomePage() {
+  useGetAuthCheckQuery(null)
+
+
+
   return (
     <section className="container min-w-full px-4">
       <Hero />

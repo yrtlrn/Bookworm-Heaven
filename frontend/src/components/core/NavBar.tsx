@@ -125,10 +125,9 @@ const NavBar = () => {
           <div className="flex flex-col gap-4 p-3 text-center">
             {isAuth ? (
               <>
-                <Link
-                  to="/"
-                  onClick={() => logoutFun()}
-                >
+                <Link to="/user/orders">Your Orders</Link>
+                <Link to="/user/setting">Setting</Link>
+                <Link to="/" onClick={() => logoutFun()}>
                   Logout
                 </Link>
               </>

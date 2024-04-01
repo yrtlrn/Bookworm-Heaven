@@ -5,7 +5,7 @@ const Footer = () => {
         Copyright &#169;. Bookworm Heaven. All right
         Reserved.{" "}
       </p>
-      <span className="font-bold">NOT A REAL WEBSTIE</span>
+      <span className="font-bold text-yellow-500 ">NOT A REAL WEBSTIE</span>
     </footer>
   );
 };

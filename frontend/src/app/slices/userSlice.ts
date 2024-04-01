@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { UserApi } from "../api/userApi";
 import { RootState } from "../store";
 
-const initialState: { authorized: boolean } = {
+const initialState: {
+  authorized: boolean;
+} = {
   authorized: false,
 };
 
@@ -16,25 +18,25 @@ const userSlice = createSlice({
       (state) => {
         state.authorized = true;
       }
-    ),
-      builder.addMatcher(
-        UserApi.endpoints.postLogoutUser.matchFulfilled,
-        (state) => {
-          state.authorized = false;
-        }
-      ),
-      builder.addMatcher(
-        UserApi.endpoints.postLoginUser.matchFulfilled,
-        (state) => {
-          state.authorized = true;
-        }
-      ),
-      builder.addMatcher(
-        UserApi.endpoints.postSignupUser.matchFulfilled,
-        (state) => {
-          state.authorized = true;
-        }
-      );
+    );
+    builder.addMatcher(
+      UserApi.endpoints.postLogoutUser.matchFulfilled,
+      (state) => {
+        state.authorized = false;
+      }
+    );
+    builder.addMatcher(
+      UserApi.endpoints.postLoginUser.matchFulfilled,
+      (state) => {
+        state.authorized = true;
+      }
+    );
+    builder.addMatcher(
+      UserApi.endpoints.postSignupUser.matchFulfilled,
+      (state) => {
+        state.authorized = true;
+      }
+    );
   },
 });
 

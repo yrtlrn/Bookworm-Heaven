@@ -148,11 +148,12 @@ const updateProfile = asyncHandler(
 
     const user = await User.findById(req.session.userId);
 
+    console.log("Here Controllers")
     // User Exist Check
     if (!user) {
       res
         .status(404)
-        .json({ message: "User does nto exist" });
+        .json({ message: "User does not exist" });
     }
 
     if (await user?.checkPassword(currentPassword)) {

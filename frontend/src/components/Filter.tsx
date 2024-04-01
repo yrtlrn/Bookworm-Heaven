@@ -184,7 +184,7 @@ const Filter = () => {
             Type
           </h3>
           <select
-            className="col-span-2 select select-bordered"
+            className="col-span-2 text-xl select select-bordered"
             {...register("typeValue")}
           >
             <option> </option>
