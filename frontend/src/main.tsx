@@ -25,6 +25,7 @@ import SettingPage from "./page/SettingPage.tsx";
 import ProfilePage from "./page/ProfilePage.tsx";
 import LoginPage from "./page/LoginPage.tsx";
 import SignupPage from "./page/SignupPage.tsx";
+import BookViewPage from "./page/BookViewPage.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,10 @@ const router = createBrowserRouter(
       <Route index element={<HomePage />} />
       <Route path="log-in" element={<LoginPage />} />
       <Route path="sign-up" element={<SignupPage />} />
+      <Route
+        path="books/search"
+        element={<BookViewPage />}
+      />
 
       {/* Private Routes */}
       <Route path="/user" element={<AuthLayout />}>

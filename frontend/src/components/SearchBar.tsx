@@ -5,7 +5,7 @@ const SearchBar = () => {
   const [authorValue, setAuthorValue] = useState("");
 
   return (
-    <form className="grid w-[80%] grid-cols-3 grid-rows-2 p-2 m-1 text-center absCenter rounded-box bg-base-200 gap-3">
+    <form className="grid w-[80%] grid-cols-3 grid-rows-3 p-2 m-1 text-center absCenter rounded-box bg-base-200 gap-3">
       <label
         htmlFor="title"
         className="flex items-center justify-center"
@@ -30,6 +30,9 @@ const SearchBar = () => {
         value={authorValue}
         onChange={(e) => setAuthorValue(e.target.value)}
       />
+      <button className="col-span-3 text-xl btn btn-outline">
+        Search
+      </button>
     </form>
   );
 };

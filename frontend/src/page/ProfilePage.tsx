@@ -20,7 +20,6 @@ const ProfilePage = () => {
   // UseForm Setup
   const {
     register,
-    watch,
     handleSubmit,
     reset,
     formState: { errors },

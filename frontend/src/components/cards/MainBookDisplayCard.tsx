@@ -5,7 +5,7 @@ type MainBooksSectionProps = {
   getBookFunction: any;
 };
 
-const MainBooksSection = ({
+const MainBookDisplayCard = ({
   title,
   getBookFunction,
 }: MainBooksSectionProps) => {
@@ -47,4 +47,4 @@ const MainBooksSection = ({
     </section>
   );
 };
-export default MainBooksSection;
+export default MainBookDisplayCard;

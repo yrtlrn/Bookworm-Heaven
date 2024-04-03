@@ -6,7 +6,10 @@ import { BookProps } from "../../../../backend/models/bookModel";
 
 type getBook = {
   data: [BookProps];
-  pagination: {};
+  pagination: {
+    totalBooks: number,
+    totalPages: number
+  };
 };
 
 const baseQuery = fetchBaseQuery({
@@ -35,6 +38,16 @@ export const BookApi = createApi({
         method: "GET",
       }),
     }),
+    getAllBooks: builder.query<getBook, object>({
+      query: (queryS: object) => {
+        return {
+          url: "/",
+          method: "GET",
+          credentials: "include",
+          params: { ...queryS },
+        };
+      },
+    }),
   }),
 });
 
@@ -42,4 +55,5 @@ export const {
   useGetTrendingBooksQuery,
   useGetPopularBooksQuery,
   useGetLatestBooksQuery,
+  useGetAllBooksQuery,
 } = BookApi;

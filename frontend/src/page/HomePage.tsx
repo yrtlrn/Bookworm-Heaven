@@ -5,29 +5,26 @@ import {
   useGetTrendingBooksQuery,
   useGetLatestBooksQuery,
 } from "../app/api/bookApi";
-import MainBooksSection from "../components/cards/MainBookDisplayCard";
+import MainBookDisplayCard from "../components/cards/MainBookDisplayCard";
 import AddBookRequest from "../components/AddBookRequest";
 import { useGetAuthCheckQuery } from "../app/api/userApi";
 
-
 function HomePage() {
-  useGetAuthCheckQuery(null)
-
-
+  useGetAuthCheckQuery(null);
 
   return (
     <section className="container min-w-full px-4">
       <Hero />
       <Filter />
-      <MainBooksSection
+      <MainBookDisplayCard
         title="Trending"
         getBookFunction={useGetTrendingBooksQuery}
       />
-      <MainBooksSection
+      <MainBookDisplayCard
         title="Popular"
         getBookFunction={useGetPopularBooksQuery}
       />
-      <MainBooksSection
+      <MainBookDisplayCard
         title="Latest"
         getBookFunction={useGetLatestBooksQuery}
       />
