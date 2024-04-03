@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import Book from "../models/bookModel";
-import { ObjectId, Types } from "mongoose";
+import { Types } from "mongoose";
 import User from "../models/userModel";
 import session from "express-session";
 
@@ -19,14 +19,14 @@ const getAllBooks = asyncHandler(
   async (req: Request, res: Response) => {
     const queryOptions = constructSearchQuery(req.query);
 
-    const page = req.query.page || 1;
+    let page = req.query.page || 1;
     const limit = 10;
     const skip = (page as number) * 10 - 10;
 
     const books = await Book.find(queryOptions)
       .skip(skip)
       .limit(limit)
-      .select("-description -__v");
+      .select(" -__v -_id");
 
     if (!books) {
       res

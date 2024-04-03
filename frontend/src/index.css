@@ -12,4 +12,10 @@
   .errorText {
     @apply text-xs text-center text-red-500
   }
+  .pagArrowLeft {
+    @apply p-1 mr-1 flex justify-center items-center bg-base-200 h-[3rem] hover:bg-slate-700 rounded-lg w-10
+  }
+  .pagArrowRight {
+    @apply p-1 ml-1 flex justify-center items-center bg-base-200 h-[3rem] hover:bg-slate-700 rounded-lg w-10
+  }
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import logoImage from "../../assets/logo.png";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, createSearchParams } from "react-router-dom";
 import { isUserAuthorized } from "../../app/slices/userSlice";
 import { useAppSelector } from "../../app/hooks/hook";
 import { usePostLogoutUserMutation } from "../../app/api/userApi";
@@ -116,11 +116,36 @@ const NavBar = () => {
           className="absolute flex justify-between w-full bg-base-300 rounded-box h-fit"
         >
           <div className="flex flex-col gap-4 p-3 text-center">
-            <Link to="/Most-Popular-Books">
+            <Link
+              to={{
+                pathname: "/books/search",
+                search: `?${createSearchParams({
+                  type: "Most Popular",
+                })}`,
+              }}
+            >
               Most Popular
             </Link>
-            <Link to="/Trending-Books">Trending</Link>
-            <Link to="/Latest-Books">Latest</Link>
+            <Link
+              to={{
+                pathname: "/books/search",
+                search: `?${createSearchParams({
+                  type: "Trending",
+                })}`,
+              }}
+            >
+              Trending
+            </Link>
+            <Link
+              to={{
+                pathname: "/books/search",
+                search: `?${createSearchParams({
+                  type: "Latest",
+                })}`,
+              }}
+            >
+              Latest
+            </Link>
           </div>
           <div className="flex flex-col gap-4 p-3 text-center">
             {isAuth ? (
