@@ -2,10 +2,10 @@ import { useLocation } from "react-router-dom";
 import {
   useGetBookDetailsQuery,
   usePostSaveBookToUserMutation,
-} from "../app/api/bookApi";
+} from "../../app/api/bookApi";
 import { FiStar } from "react-icons/fi";
-import { useAppSelector } from "../app/hooks/hook";
-import { isUserAuthorized } from "../app/slices/userSlice";
+import { useAppSelector } from "../../app/hooks/hook";
+import { isUserAuthorized } from "../../app/slices/userSlice";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 
@@ -18,6 +18,9 @@ type knownError = {
 
 const BookDetailPage = () => {
   const { state } = useLocation();
+
+  // TODO: Find a way to check if state.bookId is empty
+
   const {
     data: book,
     isError,
@@ -45,9 +48,7 @@ const BookDetailPage = () => {
       return;
     }
     await saveBookToUser(state.bookId);
-    
   };
-
 
   useEffect(() => {
     if (saveBookIsError) {
@@ -61,7 +62,7 @@ const BookDetailPage = () => {
       toast("Book Saved Successful", { type: "success" });
     }
   }, [saveBookIsLoading]);
-  
+
   // Setting return content
   let content;
 

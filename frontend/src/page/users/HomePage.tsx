@@ -1,13 +1,13 @@
-import Filter from "../components/Filter";
-import Hero from "../components/core/Hero";
+import Filter from "../../components/Filter";
+import Hero from "../../components/core/Hero";
 import {
   useGetPopularBooksQuery,
   useGetTrendingBooksQuery,
   useGetLatestBooksQuery,
-} from "../app/api/bookApi";
-import MainBookDisplayCard from "../components/cards/MainBookDisplayCard";
-import AddBookRequest from "../components/AddBookRequest";
-import { useGetAuthCheckQuery } from "../app/api/userApi";
+} from "../../app/api/bookApi";
+import HomePageBookDisplayCard from "../../components/cards/HomePageBookDisplayCard";
+import AddBookRequest from "../../components/AddBookRequest";
+import { useGetAuthCheckQuery } from "../../app/api/userApi";
 
 function HomePage() {
   useGetAuthCheckQuery(null);
@@ -16,15 +16,15 @@ function HomePage() {
     <section className="container min-w-full px-4">
       <Hero />
       <Filter />
-      <MainBookDisplayCard
+      <HomePageBookDisplayCard
         title="Trending"
         getBookFunction={useGetTrendingBooksQuery}
       />
-      <MainBookDisplayCard
+      <HomePageBookDisplayCard
         title="Popular"
         getBookFunction={useGetPopularBooksQuery}
       />
-      <MainBookDisplayCard
+      <HomePageBookDisplayCard
         title="Latest"
         getBookFunction={useGetLatestBooksQuery}
       />

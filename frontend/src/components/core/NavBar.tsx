@@ -151,7 +151,7 @@ const NavBar = () => {
             {isAuth ? (
               <>
                 <Link to="/user/orders">Your Orders</Link>
-                <Link to="/user/saved-books">Saved Books</Link>
+                <Link to="/user/books">Saved Books</Link>
                 
                 <Link to="/user/setting">Setting</Link>
                 <Link to="/" onClick={() => logoutFun()}>

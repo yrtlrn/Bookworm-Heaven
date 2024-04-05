@@ -1,11 +1,11 @@
-import BookCard from "./BookCard";
+import HomePageBookCard from "./HomePageBookCard";
 
 type MainBooksSectionProps = {
   title: string;
   getBookFunction: any;
 };
 
-const MainBookDisplayCard = ({
+const HomePageBookDisplayCard = ({
   title,
   getBookFunction,
 }: MainBooksSectionProps) => {
@@ -31,7 +31,7 @@ const MainBookDisplayCard = ({
   } else if (isSuccess) {
     trendingBooks = (
       <div className="w-full my-5">
-        <BookCard data={books.data} />
+        <HomePageBookCard data={books.data} />
       </div>
     );
   } else if (isError) {
@@ -47,4 +47,4 @@ const MainBookDisplayCard = ({
     </section>
   );
 };
-export default MainBookDisplayCard;
+export default HomePageBookDisplayCard;

@@ -1,23 +1,17 @@
 import { Link, useSearchParams } from "react-router-dom";
-import { queryCreator } from "../utlis/queryCreator";
+import { queryCreator } from "../../utlis/queryCreator";
 import {
   useGetAllBooksQuery,
   usePostSaveBookToUserMutation,
-} from "../app/api/bookApi";
+} from "../../app/api/bookApi";
 import { useEffect, useState } from "react";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
-import { useAppSelector } from "../app/hooks/hook";
-import { isUserAuthorized } from "../app/slices/userSlice";
+import { useAppSelector } from "../../app/hooks/hook";
+import { isUserAuthorized } from "../../app/slices/userSlice";
 import { toast } from "react-toastify";
 import { Types } from "mongoose";
-import { useGetAuthCheckQuery } from "../app/api/userApi";
-
-type knownError = {
-  data: {
-    message: string;
-  };
-  status: number;
-};
+import { useGetAuthCheckQuery } from "../../app/api/userApi";
+import { knownError } from "../../types/errorTypes";
 
 const BookViewPage = () => {
   const [queryParams, setQueryParams] = useState({});

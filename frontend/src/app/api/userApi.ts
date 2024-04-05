@@ -3,17 +3,14 @@ import {
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
 
-
 // Types
-import { SignupPageProps } from "../../page/SignupPage";
-import { LoginPageProps } from "../../page/LoginPage";
-import { ProfilePageProps } from "../../page/ProfilePage";
+import { SignupPageProps } from "../../page/users/SignupPage";
+import { LoginPageProps } from "../../page/users/LoginPage";
+import { ProfilePageProps } from "../../page/users/ProfilePage";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3000/api/v1/users",
 });
-
-
 
 export const UserApi = createApi({
   reducerPath: "userApi",

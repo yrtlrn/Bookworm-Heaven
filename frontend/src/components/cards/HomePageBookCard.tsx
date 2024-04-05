@@ -3,10 +3,10 @@ import { BookProps } from "../../../../backend/models/bookModel";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-type BookCardProps = {
+type HomePageBookCard = {
   data: BookProps[];
 };
-const BookCard = ({ data }: BookCardProps) => {
+const HomePageBookCard = ({ data }: HomePageBookCard) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState("right");
 
@@ -146,4 +146,4 @@ const BookCard = ({ data }: BookCardProps) => {
     </section>
   );
 };
-export default BookCard;
+export default HomePageBookCard;

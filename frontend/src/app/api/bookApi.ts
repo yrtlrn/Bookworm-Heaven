@@ -57,10 +57,31 @@ export const BookApi = createApi({
         params: { bookId },
       }),
     }),
-    postSaveBookToUser: builder.mutation<null, Types.ObjectId>({
+    postSaveBookToUser: builder.mutation<
+      null,
+      Types.ObjectId
+    >({
       query: (bookId) => ({
         url: "/user/save",
         method: "PATCH",
+        credentials: "include",
+        params: { bookId },
+      }),
+    }),
+    getUserSavedBooks: builder.query<getBook, null>({
+      query: () => ({
+        url: "/user/books",
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+    deleteBookFromUser: builder.mutation<
+      null,
+      Types.ObjectId
+    >({
+      query: (bookId) => ({
+        url: "/user/remove",
+        method: "DELETE",
         credentials: "include",
         params: { bookId },
       }),
@@ -74,5 +95,7 @@ export const {
   useGetLatestBooksQuery,
   useGetAllBooksQuery,
   useGetBookDetailsQuery,
-  usePostSaveBookToUserMutation
+  usePostSaveBookToUserMutation,
+  useGetUserSavedBooksQuery,
+  useDeleteBookFromUserMutation
 } = BookApi;

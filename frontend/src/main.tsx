@@ -17,16 +17,18 @@ import store from "./app/store.ts";
 import { ToastContainer } from "react-toastify";
 
 // Pages Imports
-import HomePage from "./page/HomePage.tsx";
+import HomePage from "./page/users/HomePage.tsx";
 import MainLayout from "./layout/MainLayout.tsx";
 import "react-toastify/dist/ReactToastify.css";
 import AuthLayout from "./layout/AuthLayout.tsx";
-import SettingPage from "./page/SettingPage.tsx";
-import ProfilePage from "./page/ProfilePage.tsx";
-import LoginPage from "./page/LoginPage.tsx";
-import SignupPage from "./page/SignupPage.tsx";
-import BookViewPage from "./page/BookViewPage.tsx";
-import BookDetailPage from "./page/BookDetailPage.tsx";
+import SettingPage from "./page/users/SettingPage.tsx";
+import ProfilePage from "./page/users/ProfilePage.tsx";
+import LoginPage from "./page/users/LoginPage.tsx";
+import SignupPage from "./page/users/SignupPage.tsx";
+import BookViewPage from "./page/books/BookViewPage.tsx";
+import BookDetailPage from "./page/books/BookDetailPage.tsx";
+import SavedBooksPage from "./page/books/SavedBooksPage.tsx";
+import NotFoundPage from "./page/NotFoundPage.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,13 +41,18 @@ const router = createBrowserRouter(
         path="books/search"
         element={<BookViewPage />}
       />
-      <Route path="books/:booktitle" element={<BookDetailPage />} />
+      <Route
+        path="books/:booktitle"
+        element={<BookDetailPage />}
+      />
 
       {/* Private Routes */}
       <Route path="/user" element={<AuthLayout />}>
         <Route path="setting" element={<SettingPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="books" element={<SavedBooksPage />} />
       </Route>
+      <Route path="*" element={<NotFoundPage />} />
     </Route>
   )
 );

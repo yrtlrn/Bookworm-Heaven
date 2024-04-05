@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
-import { useGetProfileDataQuery } from "../app/api/userApi";
+import { useGetProfileDataQuery } from "../../app/api/userApi";
 
 const SettingPage = () => {
   const getProfileData = useGetProfileDataQuery(null);
 
-  let name 
+  let name;
 
   if (getProfileData.isLoading) {
-    name = "Hello"
+    name = "Hello";
   } else if (getProfileData.isError) {
-    name = "Error: Could not get the user's Name"
+    name = "Error: Could not get the user's Name";
   } else if (getProfileData.isSuccess) {
-    name = `Hello ${getProfileData.data.firstName}`
+    name = `Hello ${getProfileData.data.firstName}`;
   }
   return (
     <section className="flex flex-col justify-center h-screen">

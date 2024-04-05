@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { usePostLoginUserMutation } from "../app/api/userApi";
+import { usePostLoginUserMutation } from "../../app/api/userApi";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useState } from "react";
@@ -17,7 +17,7 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<LoginPageProps>();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -33,7 +33,7 @@ const LoginPage = () => {
       };
       toast(knownError.data.message, { type: "error" });
     } else {
-      navigate("/")
+      navigate("/");
       toast("Log In Successful", { type: "success" });
     }
   };

@@ -302,7 +302,7 @@ const saveBookToUser = asyncHandler(
     if (user && book) {
       user.savedBooks.push(book._id);
       await user.save();
-      console.log(user)
+
       res.status(200).json({ message: "Book Saved" });
       return;
     }
@@ -378,7 +378,15 @@ const getAllUserSavedBooks = asyncHandler(
         .json({ message: "User does not exist" });
       return;
     }
-    res.status(200).json({ data: user.savedBooks });
+
+    const books = await Book.find({
+      _id: { $in: user.savedBooks },
+    });
+    if (!books) {
+      res.status(404);
+      throw new Error("Books not found");
+    }
+    res.status(200).json({ data: books });
   }
 );
 
@@ -433,4 +441,3 @@ export {
   removeBookFromUser,
   getAllUserSavedBooks,
 };
-

@@ -1,45 +1,36 @@
 import { useForm } from "react-hook-form";
-import {
-  useGetProfileDataQuery,
-  usePutUpdateProfileMutation,
-} from "../app/api/userApi";
+import { usePostSignupUserMutation } from "../../app/api/userApi";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export type ProfilePageProps = {
+export type SignupPageProps = {
   firstName: string;
   lastName: string;
   email: string;
-  currentPassword: string;
-  newPassword: string;
+  password: string;
+  confirmPassword: string;
 };
 
-const ProfilePage = () => {
-  // UseForm Setup
+const SignupPage = () => {
   const {
     register,
+    watch,
     handleSubmit,
-    reset,
     formState: { errors },
-  } = useForm<ProfilePageProps>();
+  } = useForm<SignupPageProps>();
 
   const navigate = useNavigate();
 
-  const getProfileData = useGetProfileDataQuery(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
 
-  useEffect(() => {
-    if (getProfileData.isSuccess) {
-      reset(getProfileData.data);
-    }
-  }, [getProfileData]);
+  const [signupUser] = usePostSignupUserMutation();
 
-  // Update Profile API Call
-  const [updateProfile] = usePutUpdateProfileMutation();
-
-  const onSubmit = async (data: ProfilePageProps) => {
-    const response = await updateProfile(data);
+  const onSubmit = async (data: SignupPageProps) => {
+    const response = await signupUser(data);
 
     if ("error" in response) {
       const knownError = response.error as {
@@ -50,16 +41,10 @@ const ProfilePage = () => {
       toast(knownError.data.message, { type: "error" });
     } else {
       navigate("/");
-      toast("Profile Update Successful", {
-        type: "success",
-      });
+      toast("Sign Up Successful", { type: "success" });
     }
   };
 
-  // Password Visibility
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] =
-    useState(false);
   const changePasswordVisibility = (passType: string) => {
     let elem;
     if (passType === "password") {
@@ -195,14 +180,14 @@ const ProfilePage = () => {
               htmlFor="signupPassword"
               className="text-2xl"
             >
-              Current Password
+              Password
             </label>
             <div className="relative">
               <input
                 type="password"
                 id="signupPassword"
                 className="input input-bordered"
-                {...register("currentPassword", {
+                {...register("password", {
                   required: {
                     value: true,
                     message: "Please enter a Password",
@@ -224,9 +209,9 @@ const ProfilePage = () => {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
-            {errors.currentPassword ? (
+            {errors.password ? (
               <span className="errorText">
-                {errors.currentPassword.message}
+                {errors.password.message}
               </span>
             ) : (
               ""
@@ -237,18 +222,25 @@ const ProfilePage = () => {
               htmlFor="signupConfirmPassword"
               className="text-2xl"
             >
-              New Password
+              Confirm Password
             </label>
             <div className="relative">
               <input
                 type="password"
                 id="signupConfirmPassword"
                 className="input input-bordered"
-                {...register("newPassword", {
-                  minLength: {
-                    value: 6,
+                {...register("confirmPassword", {
+                  required: {
+                    value: true,
                     message:
-                      "Password must be more than 6 character",
+                      "Please re-enter your password",
+                  },
+                  validate: (value) => {
+                    if (value !== watch("password")) {
+                      return "Password must match";
+                    } else {
+                      return;
+                    }
                   },
                 })}
               />
@@ -268,9 +260,9 @@ const ProfilePage = () => {
                 )}
               </button>
             </div>
-            {errors.newPassword ? (
+            {errors.confirmPassword ? (
               <span className="errorText">
-                {errors.newPassword.message}
+                {errors.confirmPassword.message}
               </span>
             ) : (
               ""
@@ -278,10 +270,17 @@ const ProfilePage = () => {
           </div>
         </div>
         <button className="w-full mt-5 text-xl btn btn-outline">
-          Update
+          Sign Up
         </button>
       </form>
+
+      <aside>
+        Already have an account?{" "}
+        <span className="link">
+          <a href="/log-in">Log In</a>
+        </span>
+      </aside>
     </section>
   );
 };
-export default ProfilePage;
+export default SignupPage;

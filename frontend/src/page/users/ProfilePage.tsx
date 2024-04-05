@@ -1,36 +1,45 @@
 import { useForm } from "react-hook-form";
-import { usePostSignupUserMutation } from "../app/api/userApi";
+import {
+  useGetProfileDataQuery,
+  usePutUpdateProfileMutation,
+} from "../../app/api/userApi";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export type SignupPageProps = {
+export type ProfilePageProps = {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
-  confirmPassword: string;
+  currentPassword: string;
+  newPassword: string;
 };
 
-const SignupPage = () => {
+const ProfilePage = () => {
+  // UseForm Setup
   const {
     register,
-    watch,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<SignupPageProps>();
+  } = useForm<ProfilePageProps>();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] =
-    useState(false);
+  const getProfileData = useGetProfileDataQuery(null);
 
-  const [signupUser] = usePostSignupUserMutation();
+  useEffect(() => {
+    if (getProfileData.isSuccess) {
+      reset(getProfileData.data);
+    }
+  }, [getProfileData]);
 
-  const onSubmit = async (data: SignupPageProps) => {
-    const response = await signupUser(data);
+  // Update Profile API Call
+  const [updateProfile] = usePutUpdateProfileMutation();
+
+  const onSubmit = async (data: ProfilePageProps) => {
+    const response = await updateProfile(data);
 
     if ("error" in response) {
       const knownError = response.error as {
@@ -40,11 +49,17 @@ const SignupPage = () => {
 
       toast(knownError.data.message, { type: "error" });
     } else {
-      navigate("/")
-      toast("Sign Up Successful", { type: "success" });
+      navigate("/");
+      toast("Profile Update Successful", {
+        type: "success",
+      });
     }
   };
 
+  // Password Visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
   const changePasswordVisibility = (passType: string) => {
     let elem;
     if (passType === "password") {
@@ -180,14 +195,14 @@ const SignupPage = () => {
               htmlFor="signupPassword"
               className="text-2xl"
             >
-              Password
+              Current Password
             </label>
             <div className="relative">
               <input
                 type="password"
                 id="signupPassword"
                 className="input input-bordered"
-                {...register("password", {
+                {...register("currentPassword", {
                   required: {
                     value: true,
                     message: "Please enter a Password",
@@ -209,9 +224,9 @@ const SignupPage = () => {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
-            {errors.password ? (
+            {errors.currentPassword ? (
               <span className="errorText">
-                {errors.password.message}
+                {errors.currentPassword.message}
               </span>
             ) : (
               ""
@@ -222,25 +237,18 @@ const SignupPage = () => {
               htmlFor="signupConfirmPassword"
               className="text-2xl"
             >
-              Confirm Password
+              New Password
             </label>
             <div className="relative">
               <input
                 type="password"
                 id="signupConfirmPassword"
                 className="input input-bordered"
-                {...register("confirmPassword", {
-                  required: {
-                    value: true,
+                {...register("newPassword", {
+                  minLength: {
+                    value: 6,
                     message:
-                      "Please re-enter your password",
-                  },
-                  validate: (value) => {
-                    if (value !== watch("password")) {
-                      return "Password must match";
-                    } else {
-                      return;
-                    }
+                      "Password must be more than 6 character",
                   },
                 })}
               />
@@ -260,9 +268,9 @@ const SignupPage = () => {
                 )}
               </button>
             </div>
-            {errors.confirmPassword ? (
+            {errors.newPassword ? (
               <span className="errorText">
-                {errors.confirmPassword.message}
+                {errors.newPassword.message}
               </span>
             ) : (
               ""
@@ -270,17 +278,10 @@ const SignupPage = () => {
           </div>
         </div>
         <button className="w-full mt-5 text-xl btn btn-outline">
-          Sign Up
+          Update
         </button>
       </form>
-
-      <aside>
-        Already have an account?{" "}
-        <span className="link">
-          <a href="/log-in">Log In</a>
-        </span>
-      </aside>
     </section>
   );
 };
-export default SignupPage;
+export default ProfilePage;
