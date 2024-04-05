@@ -1,10 +1,9 @@
 // @ts-ignore
 import MongoStore from "rate-limit-mongo";
 
-
 export const limiterConfig = {
   store: new MongoStore({
-    uri: process.env.LIMITER_URI,
+    uri: process.env.LIMITER_URI as string,
     expireTimeMS: 1000 * 60 * 15, // 15 Mins
     errorHandler: console.error.bind(
       null,
@@ -16,4 +15,3 @@ export const limiterConfig = {
   standardHeaders: true,
   legacyHeaders: false,
 };
-

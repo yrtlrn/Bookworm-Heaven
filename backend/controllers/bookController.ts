@@ -26,7 +26,7 @@ const getAllBooks = asyncHandler(
     const books = await Book.find(queryOptions)
       .skip(skip)
       .limit(limit)
-      .select(" -__v -_id");
+      .select(" -__v");
 
     if (!books) {
       res
@@ -264,8 +264,9 @@ const updateBook = asyncHandler(
 );
 
 // DESC     Save a book to user's list
-// MTD      POST /api/v1/books/user/save
+// MTD      PATCH /api/v1/books/user/save
 // ACC      Private
+//$2a$10$792JAHvXuS.E4n9/AeQCC.dtLHFDM4sal0HEOUOJdjvp.O/hcFVJm
 const saveBookToUser = asyncHandler(
   async (req: Request, res: Response) => {
     const bookId = req.query.bookId;
@@ -301,6 +302,7 @@ const saveBookToUser = asyncHandler(
     if (user && book) {
       user.savedBooks.push(book._id);
       await user.save();
+      console.log(user)
       res.status(200).json({ message: "Book Saved" });
       return;
     }
@@ -431,3 +433,4 @@ export {
   removeBookFromUser,
   getAllUserSavedBooks,
 };
+

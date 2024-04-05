@@ -31,7 +31,7 @@ router
   .delete(authorizedCheck, deleteBook)
   .put(authorizedCheck, updateBook);
 
-router.post("/user/save", authorizedCheck, saveBookToUser);
+router.patch("/user/save", authorizedCheck, saveBookToUser);
 router.delete(
   "/user/remove",
   authorizedCheck,

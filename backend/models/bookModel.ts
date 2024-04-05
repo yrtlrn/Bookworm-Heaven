@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 export type BookProps = {
+  _id: Types.ObjectId,
   title: string;
   author: string;
   type: string;

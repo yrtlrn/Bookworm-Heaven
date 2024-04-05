@@ -8,6 +8,7 @@ type UserProps = {
   password: string;
   savedBooks: [Types.ObjectId];
   checkPassword: (givenPassword: string) => void;
+  cart: [{}];
 };
 
 const userSchema = new mongoose.Schema<UserProps>({
@@ -34,31 +35,44 @@ const userSchema = new mongoose.Schema<UserProps>({
   },
   savedBooks: {
     type: [Types.ObjectId],
-    default: []
+    default: [],
+  },
+  cart: {
+    type: [
+      {
+        bookId: Types.ObjectId,
+        quantity: Number,
+        price: Number,
+      },
+    ],
   },
 });
 
 userSchema.pre("save", async function (next) {
-  const hashedPassword = await bcrypt.hash(
-    this.password,
-    10
-  );
-  if (hashedPassword) {
-    this.password = hashedPassword;
-    next();
-  } else {
-    throw new Error("Something went wrong");
+  if (this.isModified("password")) {
+    const hashedPassword = await bcrypt.hash(
+      this.password,
+      10
+    );
+    if (hashedPassword) {
+      this.password = hashedPassword;
+    } else {
+      throw new Error("Something went wrong");
+    }
   }
+  next();
 });
 
 userSchema.method(
   "checkPassword",
   async function (givenPassword: string) {
-    const comparePasswrod = await bcrypt.compare(
+    console.log(givenPassword);
+    const comparePassword: boolean = await bcrypt.compare(
       givenPassword,
       this.password
     );
-    return comparePasswrod;
+    console.log(this.password);
+    return comparePassword;
   }
 );
 

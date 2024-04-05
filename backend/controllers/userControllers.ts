@@ -148,7 +148,6 @@ const updateProfile = asyncHandler(
 
     const user = await User.findById(req.session.userId);
 
-    console.log("Here Controllers")
     // User Exist Check
     if (!user) {
       res

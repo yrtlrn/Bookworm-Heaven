@@ -1,10 +1,22 @@
 import { Link } from "react-router-dom";
+import { useGetProfileDataQuery } from "../app/api/userApi";
 
 const SettingPage = () => {
+  const getProfileData = useGetProfileDataQuery(null);
+
+  let name 
+
+  if (getProfileData.isLoading) {
+    name = "Hello"
+  } else if (getProfileData.isError) {
+    name = "Error: Could not get the user's Name"
+  } else if (getProfileData.isSuccess) {
+    name = `Hello ${getProfileData.data.firstName}`
+  }
   return (
     <section className="flex flex-col justify-center h-screen">
       <h1 className="mt-20 text-5xl text-center ">
-        Hello Jack
+        {name}
       </h1>
       <div className="flex flex-col items-center gap-10 p-5 m-3 rounded-md bg-base-300">
         <Link to="/user/profile" className="w-full">

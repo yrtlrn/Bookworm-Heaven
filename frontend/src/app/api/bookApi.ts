@@ -3,12 +3,13 @@ import {
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
 import { BookProps } from "../../../../backend/models/bookModel";
+import { Types } from "mongoose";
 
 type getBook = {
   data: [BookProps];
   pagination: {
-    totalBooks: number,
-    totalPages: number
+    totalBooks: number;
+    totalPages: number;
   };
 };
 
@@ -48,6 +49,22 @@ export const BookApi = createApi({
         };
       },
     }),
+    getBookDetails: builder.query<BookProps, string>({
+      query: (bookId) => ({
+        url: "/detail",
+        method: "GET",
+        credentials: "include",
+        params: { bookId },
+      }),
+    }),
+    postSaveBookToUser: builder.mutation<null, Types.ObjectId>({
+      query: (bookId) => ({
+        url: "/user/save",
+        method: "PATCH",
+        credentials: "include",
+        params: { bookId },
+      }),
+    }),
   }),
 });
 
@@ -56,4 +73,6 @@ export const {
   useGetPopularBooksQuery,
   useGetLatestBooksQuery,
   useGetAllBooksQuery,
+  useGetBookDetailsQuery,
+  usePostSaveBookToUserMutation
 } = BookApi;
