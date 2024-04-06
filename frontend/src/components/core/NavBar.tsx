@@ -1,14 +1,31 @@
+// React Import
 import { useState } from "react";
+
 import logoImage from "../../assets/logo.png";
 import { motion } from "framer-motion";
 import { Link, createSearchParams } from "react-router-dom";
+
+// Redux Toolkit
 import { isUserAuthorized } from "../../app/slices/userSlice";
-import { useAppSelector } from "../../app/hooks/hook";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../app/hooks/hook";
 import { usePostLogoutUserMutation } from "../../app/api/userApi";
+import {
+  getCartItems,
+  getTotalPrice,
+  decreaseQuantity,
+  increaseQuantity,
+} from "../../app/slices/cartSlice";
+
+// Alerts and Icons
 import { toast } from "react-toastify";
+import { FaShoppingCart } from "react-icons/fa";
 
 const NavBar = () => {
   const [navOpen, setNavOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
 
   // Nav Dropdown animation
   const topBarVariants = {
@@ -29,20 +46,40 @@ const NavBar = () => {
     closed: { y: -300 },
   };
 
+  // Cart animation
+  const cartDropDownVariants = {
+    open: { y: 5 },
+    closed: { y: -300 },
+  };
+
   // Close Nav dropdown
   window.onclick = function (event) {
     if (event !== null && event.target !== null) {
       const element = event.target as Element;
-      const isMatch = element.matches("#NavButton");
+      const isMatchNav = element.matches("#NavButton");
+      // const isMatchCart = element.matches("#CartButton");
 
-      if (isMatch === false && navOpen) {
+      if (isMatchNav === false && navOpen) {
         setNavOpen(false);
       }
+
+      // if (
+      //   !isMatchCart &&
+      //   cartOpen &&
+      //   element.tagName !== "path" &&
+      //   element.tagName !== "svg"
+      // ) {
+      //   setCartOpen(false);
+      // }
     }
   };
 
-  // Check if user is authorized
+  // Global State
   const isAuth = useAppSelector(isUserAuthorized);
+  const cartItems = useAppSelector(getCartItems);
+  const cartTotal = useAppSelector(getTotalPrice);
+
+  const dispatch = useAppDispatch();
 
   // Logout User
   const [logoutUser] = usePostLogoutUserMutation();
@@ -61,9 +98,29 @@ const NavBar = () => {
     }
   };
 
+  // Toggle Cart and Nav
+  const toggleCartDropdown = () => {
+    if (cartOpen) {
+      setCartOpen(false);
+    } else {
+      setCartOpen(true);
+      setNavOpen(false);
+    }
+  };
+
+  const toggleNavDropdown = () => {
+    if (navOpen) {
+      setNavOpen(false);
+    } else {
+      setNavOpen(true);
+      setCartOpen(false);
+    }
+  };
+
   return (
     <header className="px-2">
       <div className="flex justify-between">
+        {/* Logo */}
         <section>
           <button>
             <a
@@ -81,10 +138,29 @@ const NavBar = () => {
             </a>
           </button>
         </section>
-        <section className="flex items-center">
+
+        {/* Cart and Nav Bars */}
+        <section className="flex items-center gap-2">
+          <div
+            className={`relative ${isAuth ? "" : "hidden"}`}
+          >
+            <button
+              id="CartButton"
+              className="btn btn-ghost"
+              onClick={() => toggleCartDropdown()}
+            >
+              <FaShoppingCart
+                id="#CartButton"
+                className="text-2xl "
+              />
+            </button>
+            <span className="absolute bottom-0 left-0 rounded-lg  w-[20px] ">
+              {cartItems.length}
+            </span>
+          </div>
           <button
             className="flex flex-col gap-2"
-            onClick={() => setNavOpen((prev) => !prev)}
+            onClick={() => toggleNavDropdown()}
             id="NavButton"
           >
             <motion.div
@@ -108,6 +184,8 @@ const NavBar = () => {
           </button>
         </section>
       </div>
+
+      {/* Nav Links */}
       <section className="relative z-[1]">
         <motion.div
           animate={navOpen ? "open" : "closed"}
@@ -147,12 +225,13 @@ const NavBar = () => {
               Latest
             </Link>
           </div>
+
           <div className="flex flex-col gap-4 p-3 text-center">
             {isAuth ? (
               <>
                 <Link to="/user/orders">Your Orders</Link>
                 <Link to="/user/books">Saved Books</Link>
-                
+
                 <Link to="/user/setting">Setting</Link>
                 <Link to="/" onClick={() => logoutFun()}>
                   Logout
@@ -167,6 +246,81 @@ const NavBar = () => {
           </div>
         </motion.div>
       </section>
+
+      {/* Cart Dropdown */}
+      {isAuth ? (
+        <section className="relative">
+          <motion.div
+            animate={cartOpen ? "open" : "closed"}
+            initial={{ y: -200 }}
+            variants={cartDropDownVariants}
+            className="absolute flex flex-col items-center justify-center w-full gap-3 p-2 bg-base-300 rounded-box h-fit"
+          >
+            {cartItems.length < 1 ? (
+              <h3 className="text-xl">Cart is Empty</h3>
+            ) : (
+              cartItems.map((item, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-2 grid-rows-1 gap-3"
+                >
+                  <h2>
+                    {item.itemName
+                      ? item.itemName.length > 50
+                        ? item.itemName.slice(0, 50)
+                        : item.itemName
+                      : ""}
+                  </h2>
+                  <div>
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        className="btn"
+                        onClick={() =>
+                          dispatch(
+                            increaseQuantity(item.id!)
+                          )
+                        }
+                      >
+                        +
+                      </button>
+                      <input
+                        type="number"
+                        min={0}
+                        value={item.itemQuantity}
+                        readOnly
+                        className="w-[20%] input input-sm text-center"
+                      />
+                      <button
+                        className="btn"
+                        onClick={() =>
+                          dispatch(
+                            decreaseQuantity(item.id!)
+                          )
+                        }
+                      >
+                        -
+                      </button>
+                      <p className="text-end">
+                        $
+                        {(
+                          item.itemQuantity! *
+                          item.itemPrice!
+                        ).toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+
+            <div className="flex justify-end w-full border-t-2">
+              <p>${cartTotal?.toFixed(2)}</p>
+            </div>
+          </motion.div>
+        </section>
+      ) : (
+        ""
+      )}
     </header>
   );
 };

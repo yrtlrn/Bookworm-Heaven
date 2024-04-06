@@ -6,11 +6,19 @@ import {
 } from "../../app/api/bookApi";
 import { useEffect, useState } from "react";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
-import { useAppSelector } from "../../app/hooks/hook";
+
+// Redux Toolkit
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../app/hooks/hook";
 import { isUserAuthorized } from "../../app/slices/userSlice";
 import { toast } from "react-toastify";
 import { Types } from "mongoose";
 import { useGetAuthCheckQuery } from "../../app/api/userApi";
+import { addToCart } from "../../app/slices/cartSlice";
+
+// Custom Type
 import { knownError } from "../../types/errorTypes";
 
 const BookViewPage = () => {
@@ -24,6 +32,10 @@ const BookViewPage = () => {
 
   useGetAuthCheckQuery(null);
 
+  // Dispatch
+  const dispatch = useAppDispatch();
+
+  // Check if user is authorized
   const isAuth = useAppSelector(isUserAuthorized);
 
   // API Calls
@@ -164,11 +176,10 @@ const BookViewPage = () => {
               </div>
 
               {/* Main Content */}
-              {/* TODO: On  sm the image and title should be on top, on other side by side  */}
               {books.data.map((book) => (
                 <div
                   key={book.title}
-                  className="grid grid-cols-2 grid-rows-2 gap-3 p-3 border-2 border-white "
+                  className="grid grid-cols-2 grid-rows-2 gap-3 p-3 border-2 border-white max-[420px]:flex max-[420px]:flex-col "
                 >
                   <figure>
                     <img
@@ -207,12 +218,28 @@ const BookViewPage = () => {
                         </Link>
                       </button>
                       <button
-                        className="text-xl btn btn-outline"
+                        className="text-xl btn btn-outline h-fit"
                         onClick={() => saveBook(book._id)}
                       >
                         Save Book
                       </button>
-                      <button className="col-span-2 text-xl btn btn-outline">
+                      <button
+                        className="col-span-2 text-xl btn btn-outline"
+                        onClick={() =>
+                          isAuth
+                            ? dispatch(
+                                addToCart({
+                                  itemName: book.title,
+                                  itemQuantity: 1,
+                                  itemPrice: book.price,
+                                })
+                              )
+                            : toast(
+                                "Please Log In To Add To Cart",
+                                { type: "error" }
+                              )
+                        }
+                      >
                         Add To Cart
                       </button>
                     </div>

@@ -4,10 +4,14 @@ import {
   usePostSaveBookToUserMutation,
 } from "../../app/api/bookApi";
 import { FiStar } from "react-icons/fi";
-import { useAppSelector } from "../../app/hooks/hook";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../app/hooks/hook";
 import { isUserAuthorized } from "../../app/slices/userSlice";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { addToCart } from "../../app/slices/cartSlice";
 
 type knownError = {
   data: {
@@ -18,6 +22,7 @@ type knownError = {
 
 const BookDetailPage = () => {
   const { state } = useLocation();
+  const dispatch = useAppDispatch();
 
   // TODO: Find a way to check if state.bookId is empty
 
@@ -62,6 +67,21 @@ const BookDetailPage = () => {
       toast("Book Saved Successful", { type: "success" });
     }
   }, [saveBookIsLoading]);
+
+  // Add Book to Cart
+  const addToCartFun = (title: string, price: number) => {
+    const quantity = document.getElementById(
+      "itemQuantity"
+    ) as HTMLInputElement;
+    const quantityNum: number = parseInt(quantity.value);
+    dispatch(
+      addToCart({
+        itemName: title,
+        itemPrice: price,
+        itemQuantity: quantityNum,
+      })
+    );
+  };
 
   // Setting return content
   let content;
@@ -116,13 +136,19 @@ const BookDetailPage = () => {
             <label>
               Quantity:
               <input
+                id="itemQuantity"
                 type="number"
                 min={1}
                 defaultValue={1}
                 className="m-2 input input-bordered"
               />
             </label>
-            <button className="text-2xl btn w-[80%]">
+            <button
+              className="text-2xl btn w-[80%]"
+              onClick={() =>
+                addToCartFun(book.title, book.price)
+              }
+            >
               Add To Cart
             </button>
           </div>

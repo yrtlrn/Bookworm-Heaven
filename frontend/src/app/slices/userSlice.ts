@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserApi } from "../api/userApi";
 import { RootState } from "../store";
-import { BookApi } from "../api/bookApi";
-import { toast } from "react-toastify";
 
 const initialState: {
   authorized: boolean;

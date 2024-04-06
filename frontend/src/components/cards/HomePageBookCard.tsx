@@ -2,6 +2,7 @@ import { BiStar } from "react-icons/bi";
 import { BookProps } from "../../../../backend/models/bookModel";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 
 type HomePageBookCard = {
   data: BookProps[];
@@ -124,6 +125,18 @@ const HomePageBookCard = ({ data }: HomePageBookCard) => {
               <p>by {data[currentIndex].author}</p>
               <p>${data[currentIndex].price}</p>
               <p>{data[currentIndex].description}</p>
+              <button className="text-2xl btn btn-outline">
+                <Link
+                  to={{
+                    pathname: `/books/${data[
+                      currentIndex
+                    ].title.replace(/[#?.]/g, "-")}`,
+                  }}
+                  state={{ bookId: data[currentIndex]._id }}
+                >
+                  More Details
+                </Link>
+              </button>
             </div>
           </motion.div>
         </AnimatePresence>
