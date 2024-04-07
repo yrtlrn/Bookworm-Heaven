@@ -52,6 +52,8 @@ const router = createBrowserRouter(
         <Route path="profile" element={<ProfilePage />} />
         <Route path="books" element={<SavedBooksPage />} />
       </Route>
+
+      {/* Not Found Page */}
       <Route path="*" element={<NotFoundPage />} />
     </Route>
   )

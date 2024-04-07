@@ -6,6 +6,7 @@ import { Types } from "mongoose";
 import { knownError } from "../../types/errorTypes";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import ViewDetailsButton from "../buttons/ViewDetailsButton";
 
 type SavedBookCard = {
   data: BookProps;
@@ -65,17 +66,11 @@ const SavedBookCard = ({ data }: SavedBookCard) => {
         </p>
         <p>${data.price}</p>
         <button className="btn">
-          <Link
-            to={{
-              pathname: `/books/${data.title.replace(
-                /[#?.]/g,
-                "-"
-              )}`,
-            }}
-            state={{ bookId: data._id }}
-          >
-            More Details
-          </Link>
+          <ViewDetailsButton
+            bookTitle={`${data.title}`}
+            bookId={data._id}
+            text="More Details"
+          />
         </button>
         <button className="btn">Add To Cart</button>
         <button

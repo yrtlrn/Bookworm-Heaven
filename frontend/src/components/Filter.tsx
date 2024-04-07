@@ -1,4 +1,10 @@
+import { create } from "domain";
 import { useForm } from "react-hook-form";
+import {
+  createSearchParams,
+  generatePath,
+  useNavigate,
+} from "react-router-dom";
 
 type filterProps = {
   starMin: number;
@@ -7,7 +13,7 @@ type filterProps = {
   priceMax: number;
   reviewMin: number;
   reviewMax: number;
-  typeValue: "Latest" | "Most Popular" | "Trending" | " ";
+  typeValue: "Latest" | "Most Popular" | "Trending" | "";
 };
 
 const Filter = () => {
@@ -18,20 +24,64 @@ const Filter = () => {
     formState: { errors },
   } = useForm<filterProps>();
 
-  const onSubmit = (data: filterProps) => {
-    if (
-      data.priceMax ||
-      data.priceMin ||
-      data.reviewMax ||
-      data.reviewMin ||
-      data.starMax ||
-      data.starMin ||
-      data.typeValue
-    ) {
-      return console.log(data);
-    } else {
-      return console.log("No Data");
+  const nagivate = useNavigate();
+
+  const onSubmit = async (data: filterProps) => {
+    const searchParams: URLSearchParams =
+      new URLSearchParams();
+
+    // Type
+    if (data.typeValue) {
+      searchParams.append("type", data.typeValue);
     }
+
+    // Star
+    if (data.starMin) {
+      searchParams.append(
+        "starMin",
+        data.starMin.toString()
+      );
+    }
+    if (data.starMax) {
+      searchParams.append(
+        "starMax",
+        data.starMax.toString()
+      );
+    }
+
+    // Price
+    if (data.priceMin) {
+      searchParams.append(
+        "priceMin",
+        data.priceMin.toString()
+      );
+    }
+    if (data.priceMax) {
+      searchParams.append(
+        "priceMax",
+        data.priceMax.toString()
+      );
+    }
+
+    // Reviews
+    if (data.reviewMin) {
+      searchParams.append(
+        "reviewMin",
+        data.reviewMin.toString()
+      );
+    }
+    if (data.reviewMax) {
+      searchParams.append(
+        "reviewMax",
+        data.reviewMax.toString()
+      );
+    }
+
+    nagivate({
+      pathname: "/books/search",
+      search: searchParams.toString()
+    })
+    
   };
 
   return (

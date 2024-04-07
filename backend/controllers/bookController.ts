@@ -393,36 +393,69 @@ const getAllUserSavedBooks = asyncHandler(
 const constructSearchQuery = (searchQuery: any) => {
   let constructedQuery: any = {};
 
-  // Specific Star
-  if (searchQuery.star) {
-    constructedQuery.stars = searchQuery.star;
-  }
-
-  // Star Min and Max
-  if (searchQuery.starMin || searchQuery.starMax) {
-    constructedQuery.stars = {
-      $lte: searchQuery.starMax ? searchQuery.starMax : 5,
-      $gte: searchQuery.starMin ? searchQuery.starMin : 0,
-    };
-  }
-
   // Specific Type
   if (searchQuery.type) {
     constructedQuery.type = searchQuery.type;
   }
 
-  // Specific Price
-  if (searchQuery.price) {
-    constructedQuery.price = searchQuery.price;
+  // Star Min & Max
+  if (searchQuery.starMin || searchQuery.starMax) {
+    if (searchQuery.starMin && searchQuery.starMax) {
+      constructedQuery.stars = {
+        $gte: searchQuery.starMin,
+        $lte: searchQuery.starMax,
+      };
+      return;
+    }
+    if (searchQuery.starMin) {
+      constructedQuery.stars = {
+        $gte: searchQuery.starMin,
+      };
+    } else if (searchQuery.starMax) {
+      constructedQuery.stars = {
+        $lte: searchQuery.starMax,
+      };
+    }
   }
-  // Price Min and Max
+
+  // Price Min & Max
   if (searchQuery.priceMin || searchQuery.priceMax) {
-    constructedQuery.price = {
-      $lte: searchQuery.priceMax
-        ? searchQuery.priceMax
-        : "",
-      $gte: searchQuery.priceMin ? searchQuery.priceMin : 0,
-    };
+    if (searchQuery.priceMin && searchQuery.priceMax) {
+      constructedQuery.price = {
+        $gte: searchQuery.priceMin,
+        $lte: searchQuery.priceMax,
+      };
+      return;
+    }
+    if (searchQuery.priceMin) {
+      constructedQuery.price = {
+        $gte: searchQuery.priceMin,
+      };
+    } else if (searchQuery.priceMax) {
+      constructedQuery.price = {
+        $lte: searchQuery.priceMax,
+      };
+    }
+  }
+
+  // Review Min & Max
+  if (searchQuery.reviewMin || searchQuery.reviewMax) {
+    if (searchQuery.reviewMin && searchQuery.reviewMax) {
+      constructedQuery.reviews = {
+        $gte: searchQuery.reviewMin,
+        $lte: searchQuery.reviewMax,
+      };
+      return;
+    }
+    if (searchQuery.reviewMin) {
+      constructedQuery.reviews = {
+        $gte: searchQuery.reviewMin,
+      };
+    } else if (searchQuery.reviewMax) {
+      constructedQuery.reviews = {
+        $lte: searchQuery.reviewMax,
+      };
+    }
   }
 
   return constructedQuery;
