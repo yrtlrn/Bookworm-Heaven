@@ -37,6 +37,12 @@ const userSlice = createSlice({
         state.authorized = true;
       }
     );
+    builder.addMatcher(
+      UserApi.endpoints.deleteUser.matchFulfilled,
+      (state) => {
+        state.authorized = false;
+      }
+    );
   },
 });
 

@@ -66,12 +66,11 @@ userSchema.pre("save", async function (next) {
 userSchema.method(
   "checkPassword",
   async function (givenPassword: string) {
-    console.log(givenPassword);
     const comparePassword: boolean = await bcrypt.compare(
       givenPassword,
       this.password
     );
-    console.log(this.password);
+
     return comparePassword;
   }
 );

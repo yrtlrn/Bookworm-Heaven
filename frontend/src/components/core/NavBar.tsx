@@ -155,7 +155,11 @@ const NavBar = () => {
               />
             </button>
             <span className="absolute bottom-0 left-0 rounded-lg  w-[20px] ">
-              {cartItems.length}
+              {cartItems.reduce(
+                (total, amount) =>
+                  total + amount.itemQuantity,
+                0
+              )}
             </span>
           </div>
           <button
@@ -189,7 +193,7 @@ const NavBar = () => {
       <section className="relative z-[1]">
         <motion.div
           animate={navOpen ? "open" : "closed"}
-          initial={{ y: -200 }}
+          initial={{ y: -300 }}
           variants={navDropDownVariants}
           className="absolute flex justify-between w-full bg-base-300 rounded-box h-fit"
         >
@@ -252,7 +256,7 @@ const NavBar = () => {
         <section className="relative">
           <motion.div
             animate={cartOpen ? "open" : "closed"}
-            initial={{ y: -200 }}
+            initial={{ y: -300 }}
             variants={cartDropDownVariants}
             className="absolute flex flex-col items-center justify-center w-full gap-3 p-2 bg-base-300 rounded-box h-fit"
           >
@@ -262,7 +266,7 @@ const NavBar = () => {
               cartItems.map((item, index) => (
                 <div
                   key={index}
-                  className="grid grid-cols-2 grid-rows-1 gap-3"
+                  className="grid grid-cols-2 grid-rows-1 gap-3 p-2"
                 >
                   <h2>
                     {item.itemName
@@ -272,34 +276,36 @@ const NavBar = () => {
                       : ""}
                   </h2>
                   <div>
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        className="btn"
-                        onClick={() =>
-                          dispatch(
-                            increaseQuantity(item.id!)
-                          )
-                        }
-                      >
-                        +
-                      </button>
-                      <input
-                        type="number"
-                        min={0}
-                        value={item.itemQuantity}
-                        readOnly
-                        className="w-[20%] input input-sm text-center"
-                      />
-                      <button
-                        className="btn"
-                        onClick={() =>
-                          dispatch(
-                            decreaseQuantity(item.id!)
-                          )
-                        }
-                      >
-                        -
-                      </button>
+                    <div className="flex items-center justify-end gap-2 max-[420px]:flex-col">
+                      <div className="flex gap-2">
+                        <button
+                          className="text-2xl btn max-[375px]:size-2"
+                          onClick={() =>
+                            dispatch(
+                              increaseQuantity(item.id!)
+                            )
+                          }
+                        >
+                          +
+                        </button>
+                        <input
+                          type="number"
+                          min={0}
+                          value={item.itemQuantity}
+                          readOnly
+                          className=" text-center w-[30%] input "
+                        />
+                        <button
+                          className="text-2xl btn max-[375px]:size-2"
+                          onClick={() =>
+                            dispatch(
+                              decreaseQuantity(item.id!)
+                            )
+                          }
+                        >
+                          -
+                        </button>
+                      </div>
                       <p className="text-end">
                         $
                         {(

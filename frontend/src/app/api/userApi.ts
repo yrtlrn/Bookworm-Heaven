@@ -66,6 +66,13 @@ export const UserApi = createApi({
         body: data,
       }),
     }),
+    deleteUser: builder.mutation<null, null>({
+      query: () => ({
+        url: "/delete",
+        method: "DELETE",
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -76,4 +83,5 @@ export const {
   usePostLogoutUserMutation,
   useGetProfileDataQuery,
   usePutUpdateProfileMutation,
+  useDeleteUserMutation,
 } = UserApi;

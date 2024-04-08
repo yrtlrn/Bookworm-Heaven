@@ -8,15 +8,16 @@ import {
 import HomePageBookDisplayCard from "../../components/cards/HomePageBookDisplayCard";
 import AddBookRequest from "../../components/AddBookRequest";
 import { useGetAuthCheckQuery } from "../../app/api/userApi";
-import { useAppSelector } from "../../app/hooks/hook";
-import { getCartItems } from "../../app/slices/cartSlice";
+import { useEffect } from "react";
 
 function HomePage() {
-  useGetAuthCheckQuery(null);
+  const authCheck = useGetAuthCheckQuery(null)
+  useEffect(() => {
+    authCheck
+    
+  }, [authCheck]);
 
-  const cartItems = useAppSelector(getCartItems)
-
-  console.log(cartItems)
+  
 
   return (
     <section className="container min-w-full px-4">

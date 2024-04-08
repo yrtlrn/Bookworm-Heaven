@@ -28,11 +28,7 @@ const BookViewPage = () => {
 
   const [searchParams] = useSearchParams();
 
-  console.log(`Search Params: ${searchParams}`);
-
   const constructedQuery = queryCreator(searchParams);
-
-  console.log(`Contructed Query: ${constructedQuery}`);
 
   const [page, setPage] = useState(1);
   const [pageSection, setPageSection] = useState(0);
@@ -51,12 +47,18 @@ const BookViewPage = () => {
     isLoading,
     isError,
     isSuccess,
-  } = useGetAllBooksQuery(queryParams);
+  } = useGetAllBooksQuery(queryParams, {
+    skip: !queryParams,
+  });
 
   const changePage = (pageNum: number) => {
     setPage(pageNum);
     setQueryParams({ ...queryParams, page: pageNum });
   };
+
+  useEffect(() => {
+    console.log("UserEffect");
+  }, []);
 
   const [
     saveBookToUser,

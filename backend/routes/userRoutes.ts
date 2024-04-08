@@ -28,7 +28,7 @@ router.post("/signup", signupValidator, signupUser);
 // Private Routes
 router.get("/authCheck", authorizedCheck, authCheck);
 router.post("/logout", authorizedCheck, logoutUser);
-router.delete("/delete", deleteUser);
+router.delete("/delete", authorizedCheck, deleteUser);
 router
   .route("/profile")
   .get(authorizedCheck, profileData)

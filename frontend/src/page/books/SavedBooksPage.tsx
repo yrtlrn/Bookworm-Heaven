@@ -21,18 +21,18 @@ const SavedBooksPage = () => {
     if (dataLength <= 0) {
       content = (
         <div>
-          <h1 className="flex items-center justify-center text-3xl">List is Empty</h1>
+          <h1 className="flex items-center justify-center text-3xl">
+            List is Empty
+          </h1>
         </div>
       );
     } else {
-      
-      console.log(getUserSavedBooks.data.data.length);
       content = getUserSavedBooks.data.data.map((book) => (
         <SavedBookCard data={book} />
       ));
     }
   }
-  
+
   return content;
 };
 export default SavedBooksPage;

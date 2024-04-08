@@ -1,9 +1,12 @@
 import { useForm } from "react-hook-form";
-import { usePostSignupUserMutation } from "../../app/api/userApi";
+import {
+  usePostSignupUserMutation,
+} from "../../app/api/userApi";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 
 export type SignupPageProps = {
   firstName: string;
@@ -22,6 +25,9 @@ const SignupPage = () => {
   } = useForm<SignupPageProps>();
 
   const navigate = useNavigate();
+
+
+
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] =

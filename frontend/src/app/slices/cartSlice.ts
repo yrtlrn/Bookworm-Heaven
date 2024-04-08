@@ -43,6 +43,7 @@ const cartSlice = createSlice({
 
           state.items[itemIndex].itemQuantity +=
             action.payload.itemQuantity;
+          
         } else {
           state.items.push(action.payload);
         }
