@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { UserApi } from "../api/userApi";
+import {
+  UserApi,
+  useGetUserCartQuery,
+} from "../api/userApi";
 import { RootState } from "../store";
+import { useAppDispatch } from "../hooks/hook";
+import { setCartItems } from "./cartSlice";
 
 const initialState: {
   authorized: boolean;
@@ -35,6 +40,9 @@ const userSlice = createSlice({
       UserApi.endpoints.postSignupUser.matchFulfilled,
       (state) => {
         state.authorized = true;
+        const getCart = useGetUserCartQuery(null);
+        const dispatch = useAppDispatch();
+        dispatch(setCartItems(getCart.data));
       }
     );
     builder.addMatcher(

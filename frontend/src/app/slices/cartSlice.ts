@@ -1,26 +1,24 @@
 import {
   PayloadAction,
   createSlice,
-  nanoid,
 } from "@reduxjs/toolkit";
 import { RootState } from "../store";
+import { Types } from "mongoose";
+import { UserApi } from "../api/userApi";
 
 type cartProps = {
   total?: number;
   items: Array<cartItems>;
 };
 
-type cartItems = {
-  id?: string;
+export type cartItems = {
+  id: Types.ObjectId;
   itemName: string;
   itemQuantity: number;
   itemPrice: number;
 };
 
-const initialState: cartProps = {
-  total: 0,
-  items: [],
-};
+const initialState: cartProps = { total: 0, items: [] };
 
 const cartSlice = createSlice({
   name: "cart",
@@ -43,7 +41,6 @@ const cartSlice = createSlice({
 
           state.items[itemIndex].itemQuantity +=
             action.payload.itemQuantity;
-          
         } else {
           state.items.push(action.payload);
         }
@@ -58,24 +55,29 @@ const cartSlice = createSlice({
         state.total = parseFloat(sum.toFixed(2));
       },
       prepare: (item: cartItems) => {
-        const id = nanoid();
-        return { payload: { ...item, id } };
+        return { payload: item };
       },
     },
     increaseQuantity: {
-      reducer: (state, action: PayloadAction<string>) => {
+      reducer: (
+        state,
+        action: PayloadAction<Types.ObjectId>
+      ) => {
         const itemIndex = state.items.findIndex(
           (item) => item.id === action.payload
         );
         state.items[itemIndex].itemQuantity += 1;
         state.total! += state.items[itemIndex].itemPrice;
       },
-      prepare: (item: string) => {
+      prepare: (item: Types.ObjectId) => {
         return { payload: item };
       },
     },
     decreaseQuantity: {
-      reducer: (state, action: PayloadAction<string>) => {
+      reducer: (
+        state,
+        action: PayloadAction<Types.ObjectId>
+      ) => {
         const itemIndex = state.items.findIndex(
           (item) => item.id === action.payload
         );
@@ -86,10 +88,26 @@ const cartSlice = createSlice({
           state.items.splice(itemIndex, 1);
         }
       },
-      prepare: (item: string) => {
+      prepare: (item: Types.ObjectId) => {
         return { payload: item };
       },
     },
+    setCartItems: (
+      state,
+      action: PayloadAction<cartItems[]>
+    ) => {
+      state.items = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      UserApi.endpoints.getUserCart.matchFulfilled,
+      (state, action: PayloadAction<cartItems[]>) => {
+        console.log(action.payload);
+        console.log("Extra Reducer")
+        // state.items = action.payload;
+      }
+    );
   },
 });
 
@@ -103,6 +121,7 @@ export const {
   addToCart,
   increaseQuantity,
   decreaseQuantity,
+  setCartItems,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

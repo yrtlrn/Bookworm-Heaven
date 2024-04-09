@@ -7,6 +7,7 @@ import {
 import { SignupPageProps } from "../../page/users/SignupPage";
 import { LoginPageProps } from "../../page/users/LoginPage";
 import { ProfilePageProps } from "../../page/users/ProfilePage";
+import { cartItems } from "../slices/cartSlice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3000/api/v1/users",
@@ -73,6 +74,23 @@ export const UserApi = createApi({
         credentials: "include",
       }),
     }),
+    getUserCart: builder.query({
+      query: () => ({
+        url: "/cart",
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+    patchUpdateUserCart: builder.mutation<null, cartItems[]>({
+      query: (data) => {
+        return {
+          url: "/cart",
+          method: "PATCH",
+          credentials: "include",
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
@@ -84,4 +102,6 @@ export const {
   useGetProfileDataQuery,
   usePutUpdateProfileMutation,
   useDeleteUserMutation,
+  useGetUserCartQuery,
+  usePatchUpdateUserCartMutation,
 } = UserApi;

@@ -9,6 +9,8 @@ import {
   profileData,
   updateProfile,
   authCheck,
+  getCart,
+  updateCart,
 } from "../controllers/userControllers";
 
 // Validators Imports
@@ -37,5 +39,9 @@ router
     updateProfileValidator,
     updateProfile
   );
+router
+  .route("/cart")
+  .get(authorizedCheck, getCart)
+  .patch(authorizedCheck, updateCart);
 
 export default router;

@@ -212,12 +212,53 @@ const updateProfile = asyncHandler(
 const authCheck = (req: Request, res: Response) => {
   if (req.session.authorized) {
     res.status(200).json({ message: "User is authorized" });
-
   } else {
-    res.status(401).json({error: "Unauthorized"})
+    res.status(401).json({ error: "Unauthorized" });
   }
 };
 
+// DESC     Get user's cart
+// MTD      GET /api/v1/users/cart
+// ACC      Private
+const getCart = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user = await User.findById(req.session.userId);
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+
+    res.status(200).json({ data: user.cart });
+  }
+);
+
+// DESC     Update user's cart
+// MTD      Patch /api/v1/users/cart
+// ACC      Private
+const updateCart = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user = await User.findById(req.session.userId);
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+
+    if (req.body) {
+      user.cart = req.body;
+      const newUser = await user.save();
+
+      if (newUser) {
+        res.status(200).json({ message: "Cart Updated" });
+        return;
+      }
+    }
+    res
+      .status(500)
+      .json({ message: "Something went wrong" });
+  }
+);
 export {
   loginUser,
   signupUser,
@@ -225,5 +266,7 @@ export {
   deleteUser,
   profileData,
   updateProfile,
-  authCheck
+  authCheck,
+  getCart,
+  updateCart,
 };

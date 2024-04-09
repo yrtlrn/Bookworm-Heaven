@@ -1,5 +1,5 @@
 // React Import
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import logoImage from "../../assets/logo.png";
 import { motion } from "framer-motion";
@@ -11,7 +11,10 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../app/hooks/hook";
-import { usePostLogoutUserMutation } from "../../app/api/userApi";
+import {
+  usePatchUpdateUserCartMutation,
+  usePostLogoutUserMutation,
+} from "../../app/api/userApi";
 import {
   getCartItems,
   getTotalPrice,
@@ -43,13 +46,13 @@ const NavBar = () => {
 
   const navDropDownVariants = {
     open: { y: 5 },
-    closed: { y: -300 },
+    closed: { y: -400 },
   };
 
   // Cart animation
   const cartDropDownVariants = {
     open: { y: 5 },
-    closed: { y: -300 },
+    closed: { y: -400 },
   };
 
   // Close Nav dropdown
@@ -116,6 +119,14 @@ const NavBar = () => {
       setCartOpen(false);
     }
   };
+
+
+  // Update User's Cart in DB
+  const [updateCart] = usePatchUpdateUserCartMutation();
+
+  useEffect(() => {
+    updateCart(cartItems);
+  }, [cartItems]);
 
   return (
     <header className="px-2">
@@ -193,7 +204,7 @@ const NavBar = () => {
       <section className="relative z-[1]">
         <motion.div
           animate={navOpen ? "open" : "closed"}
-          initial={{ y: -300 }}
+          initial={{ y: -400 }}
           variants={navDropDownVariants}
           className="absolute flex justify-between w-full bg-base-300 rounded-box h-fit"
         >
@@ -256,7 +267,7 @@ const NavBar = () => {
         <section className="relative">
           <motion.div
             animate={cartOpen ? "open" : "closed"}
-            initial={{ y: -300 }}
+            initial={{ y: -400 }}
             variants={cartDropDownVariants}
             className="absolute flex flex-col items-center justify-center w-full gap-3 p-2 bg-base-300 rounded-box h-fit"
           >

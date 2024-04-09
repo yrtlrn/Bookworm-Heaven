@@ -40,11 +40,13 @@ const userSchema = new mongoose.Schema<UserProps>({
   cart: {
     type: [
       {
-        bookId: Types.ObjectId,
-        quantity: Number,
-        price: Number,
+        id: Types.ObjectId,
+        itemName: String,
+        itemPrice: Number,
+        itemQuantity: Number,
       },
     ],
+    default: [],
   },
 });
 

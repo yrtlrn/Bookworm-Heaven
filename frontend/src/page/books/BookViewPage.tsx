@@ -56,10 +56,6 @@ const BookViewPage = () => {
     setQueryParams({ ...queryParams, page: pageNum });
   };
 
-  useEffect(() => {
-    console.log("UserEffect");
-  }, []);
-
   const [
     saveBookToUser,
     {
@@ -83,9 +79,9 @@ const BookViewPage = () => {
       toast("Please Log In First", { type: "error" });
       return;
     }
-
     await saveBookToUser(bookId);
   };
+
   useEffect(() => {
     if (saveBookIsError) {
       const knownError = saveBookError as knownError;
@@ -104,6 +100,7 @@ const BookViewPage = () => {
     }
   }, [saveBookIsLoading]);
 
+  // Run Once
   useEffect(() => {
     window.scroll(0, 0);
   }, []);
@@ -264,6 +261,7 @@ const BookViewPage = () => {
                             isAuth
                               ? dispatch(
                                   addToCart({
+                                    id: book._id,
                                     itemName: book.title,
                                     itemQuantity: 1,
                                     itemPrice: book.price,

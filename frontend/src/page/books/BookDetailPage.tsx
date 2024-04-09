@@ -12,6 +12,7 @@ import { isUserAuthorized } from "../../app/slices/userSlice";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { addToCart } from "../../app/slices/cartSlice";
+import { Types } from "mongoose";
 
 type knownError = {
   data: {
@@ -46,7 +47,6 @@ const BookDetailPage = () => {
     },
   ] = usePostSaveBookToUserMutation();
 
-
   // Save Book
   const saveBook = async () => {
     if (!isAuth) {
@@ -70,13 +70,18 @@ const BookDetailPage = () => {
   }, [saveBookIsLoading]);
 
   // Add Book to Cart
-  const addToCartFun = (title: string, price: number) => {
+  const addToCartFun = (
+    bookId: Types.ObjectId,
+    title: string,
+    price: number
+  ) => {
     const quantity = document.getElementById(
       "itemQuantity"
     ) as HTMLInputElement;
     const quantityNum: number = parseInt(quantity.value);
     dispatch(
       addToCart({
+        id: bookId,
         itemName: title,
         itemPrice: price,
         itemQuantity: quantityNum,
@@ -147,7 +152,11 @@ const BookDetailPage = () => {
             <button
               className="text-2xl btn w-[80%]"
               onClick={() =>
-                addToCartFun(book.title, book.price)
+                addToCartFun(
+                  book._id,
+                  book.title,
+                  book.price
+                )
               }
             >
               Add To Cart

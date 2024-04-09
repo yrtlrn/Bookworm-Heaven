@@ -9,17 +9,18 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-// Redux Toolkit
+// Redux
 import { Provider } from "react-redux";
-import store from "./app/store.ts";
+import { store, persistor } from "./app/store.ts";
+import { PersistGate } from "redux-persist/integration/react";
 
 // Toastify
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Pages Imports
 import HomePage from "./page/users/HomePage.tsx";
 import MainLayout from "./layout/MainLayout.tsx";
-import "react-toastify/dist/ReactToastify.css";
 import AuthLayout from "./layout/AuthLayout.tsx";
 import SettingPage from "./page/users/SettingPage.tsx";
 import ProfilePage from "./page/users/ProfilePage.tsx";
@@ -29,6 +30,9 @@ import BookViewPage from "./page/books/BookViewPage.tsx";
 import BookDetailPage from "./page/books/BookDetailPage.tsx";
 import SavedBooksPage from "./page/books/SavedBooksPage.tsx";
 import NotFoundPage from "./page/NotFoundPage.tsx";
+import CheckoutPage from "./page/books/CheckoutPage.tsx";
+
+// Other
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -51,6 +55,7 @@ const router = createBrowserRouter(
         <Route path="setting" element={<SettingPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="books" element={<SavedBooksPage />} />
+        <Route path="checkout" element={<CheckoutPage />} />
       </Route>
 
       {/* Not Found Page */}
@@ -63,7 +68,9 @@ ReactDOM.createRoot(
   document.getElementById("root")!
 ).render(
   <Provider store={store}>
-    <RouterProvider router={router} />
-    <ToastContainer />
+    <PersistGate loading={null} persistor={persistor}>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </PersistGate>
   </Provider>
 );

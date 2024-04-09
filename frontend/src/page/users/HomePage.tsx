@@ -7,17 +7,18 @@ import {
 } from "../../app/api/bookApi";
 import HomePageBookDisplayCard from "../../components/cards/HomePageBookDisplayCard";
 import AddBookRequest from "../../components/AddBookRequest";
-import { useGetAuthCheckQuery } from "../../app/api/userApi";
+import {
+  useGetAuthCheckQuery,
+} from "../../app/api/userApi";
 import { useEffect } from "react";
 
 function HomePage() {
-  const authCheck = useGetAuthCheckQuery(null)
+  const authCheck = useGetAuthCheckQuery(null);
+
   useEffect(() => {
-    authCheck
-    
+    authCheck;
   }, [authCheck]);
 
-  
 
   return (
     <section className="container min-w-full px-4">

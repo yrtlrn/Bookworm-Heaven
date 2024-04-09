@@ -1,11 +1,32 @@
+// Redux Toolkit
 import { configureStore } from "@reduxjs/toolkit";
+
+// Slices
 import userReducer from "./slices/userSlice";
-import { BookApi } from "./api/bookApi";
-import { UserApi } from "./api/userApi";
 import cartReducer from "./slices/cartSlice";
 
-const store = configureStore({
+// API
+import { BookApi } from "./api/bookApi";
+import { UserApi } from "./api/userApi";
+
+// Redux Presist
+import storage from "redux-persist/lib/storage";
+import {
+  persistReducer,
+  persistStore,
+} from "redux-persist";
+// Other
+
+const persistConig = {
+  key: "root",
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConig, cartReducer)
+
+export const store = configureStore({
   reducer: {
+    persistedReducer,
     userReducer,
     cartReducer,
     [BookApi.reducerPath]: BookApi.reducer,
@@ -22,4 +43,4 @@ const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-export default store;
+export const persistor = persistStore(store)

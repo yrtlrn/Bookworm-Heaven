@@ -266,7 +266,6 @@ const updateBook = asyncHandler(
 // DESC     Save a book to user's list
 // MTD      PATCH /api/v1/books/user/save
 // ACC      Private
-//$2a$10$792JAHvXuS.E4n9/AeQCC.dtLHFDM4sal0HEOUOJdjvp.O/hcFVJm
 const saveBookToUser = asyncHandler(
   async (req: Request, res: Response) => {
     const bookId = req.query.bookId;
