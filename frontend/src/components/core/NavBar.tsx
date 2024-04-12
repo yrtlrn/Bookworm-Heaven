@@ -20,6 +20,7 @@ import {
   getTotalPrice,
   decreaseQuantity,
   increaseQuantity,
+  setCart,
 } from "../../app/slices/cartSlice";
 
 // Alerts and Icons
@@ -65,15 +66,6 @@ const NavBar = () => {
       if (isMatchNav === false && navOpen) {
         setNavOpen(false);
       }
-
-      // if (
-      //   !isMatchCart &&
-      //   cartOpen &&
-      //   element.tagName !== "path" &&
-      //   element.tagName !== "svg"
-      // ) {
-      //   setCartOpen(false);
-      // }
     }
   };
 
@@ -120,13 +112,43 @@ const NavBar = () => {
     }
   };
 
-
   // Update User's Cart in DB
   const [updateCart] = usePatchUpdateUserCartMutation();
 
   useEffect(() => {
     updateCart(cartItems);
+    if (cartItems.length > 0) {
+      localStorage.setItem(
+        "cart",
+        JSON.stringify({
+          total: cartItems
+            .reduce(
+              (total, amount) =>
+                total +
+                amount.itemPrice * amount.itemQuantity,
+              0
+            )
+            .toFixed(2),
+          items: cartItems,
+        })
+      );
+    }
   }, [cartItems]);
+
+  useEffect(() => {
+    const localdata = localStorage.getItem('cart')
+    if (localdata) {
+      const parsedData = JSON.parse(localdata)
+      if (parsedData.items.length > 0 && cartItems.length === 0) {
+        dispatch(setCart({
+          total: parseFloat(parsedData.total),
+          items: parsedData.items
+        }))
+       
+      }
+      
+    }
+  }, []);
 
   return (
     <header className="px-2">
@@ -331,7 +353,7 @@ const NavBar = () => {
             )}
 
             <div className="flex justify-end w-full border-t-2">
-              <p>${cartTotal?.toFixed(2)}</p>
+              <p>${cartTotal}</p>
             </div>
           </motion.div>
         </section>

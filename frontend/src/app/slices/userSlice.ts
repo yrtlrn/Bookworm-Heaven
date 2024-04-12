@@ -1,11 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
 import {
-  UserApi,
-  useGetUserCartQuery,
-} from "../api/userApi";
+  PayloadAction,
+  createSlice,
+} from "@reduxjs/toolkit";
+import { UserApi } from "../api/userApi";
 import { RootState } from "../store";
 import { useAppDispatch } from "../hooks/hook";
-import { setCartItems } from "./cartSlice";
+import { cartItems } from "./cartSlice";
 
 const initialState: {
   authorized: boolean;
@@ -28,21 +28,40 @@ const userSlice = createSlice({
       UserApi.endpoints.postLogoutUser.matchFulfilled,
       (state) => {
         state.authorized = false;
+        localStorage.removeItem("cart");
       }
     );
     builder.addMatcher(
       UserApi.endpoints.postLoginUser.matchFulfilled,
-      (state) => {
+      (state, action) => {
         state.authorized = true;
+        if (action.payload) {
+          const payload = action.payload as {
+            data: cartItems[];
+            message: string;
+          };
+          const total = payload.data.reduce(
+            (total, amount) =>
+              total +
+              amount.itemQuantity * amount.itemPrice,
+            0
+          );
+          const storeData = {
+            total: total,
+            items: payload.data,
+            expiry: new Date().getTime()
+          };
+          localStorage.setItem(
+            "cart",
+            JSON.stringify(storeData)
+          );
+        }
       }
     );
     builder.addMatcher(
       UserApi.endpoints.postSignupUser.matchFulfilled,
       (state) => {
         state.authorized = true;
-        const getCart = useGetUserCartQuery(null);
-        const dispatch = useAppDispatch();
-        dispatch(setCartItems(getCart.data));
       }
     );
     builder.addMatcher(

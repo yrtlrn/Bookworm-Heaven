@@ -32,7 +32,10 @@ const loginUser = asyncHandler(
       authorizeSession(req, user!._id);
       res
         .status(200)
-        .json({ message: "Login In Successful" });
+        .json({
+          message: "Login In Successful",
+          data: user?.cart,
+        });
       return;
     }
     res.status(400);

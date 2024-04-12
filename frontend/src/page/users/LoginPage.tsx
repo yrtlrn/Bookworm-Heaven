@@ -1,9 +1,14 @@
 import { useForm } from "react-hook-form";
-import { usePostLoginUserMutation } from "../../app/api/userApi";
+import {
+  useGetUserCartQuery,
+  usePostLoginUserMutation,
+} from "../../app/api/userApi";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../app/hooks/hook";
+import { setCartItems } from "../../app/slices/cartSlice";
 
 export type LoginPageProps = {
   email: string;
@@ -21,20 +26,28 @@ const LoginPage = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [loginUser] = usePostLoginUserMutation();
+  const [loginUser] =
+    usePostLoginUserMutation();
 
   const onSubmit = async (data: LoginPageProps) => {
     const response = await loginUser(data);
-
-    if ("error" in response) {
-      const knownError = response.error as {
-        data: { message: string };
-        status: number;
-      };
-      toast(knownError.data.message, { type: "error" });
-    } else {
-      navigate("/");
-      toast("Log In Successful", { type: "success" });
+    if (response) {
+      if ("error" in response) {
+        const knownError = response.error as {
+          data: { message: string };
+          status: number;
+        };
+        console.log(knownError);
+        toast(
+          knownError.data.message
+            ? knownError.data.message
+            : "Login in Successful",
+          { type: "error" }
+        );
+      } else {
+        navigate("/");
+        toast("Log In Successful", { type: "success" });
+      }
     }
   };
 
