@@ -26,10 +26,9 @@ const reducer = combineReducers({
 export const store = configureStore({
   reducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
-      BookApi.middleware,
-      UserApi.middleware
-    ),
+    getDefaultMiddleware(
+
+    ).concat(BookApi.middleware, UserApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

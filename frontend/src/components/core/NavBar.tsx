@@ -76,6 +76,8 @@ const NavBar = () => {
 
   const dispatch = useAppDispatch();
 
+
+
   // Logout User
   const [logoutUser] = usePostLogoutUserMutation();
 

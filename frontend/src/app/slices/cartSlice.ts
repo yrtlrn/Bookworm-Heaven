@@ -4,8 +4,7 @@ import {
 } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { Types } from "mongoose";
-
-
+import { REHYDRATE } from "redux-persist";
 export type cartProps = {
   total?: number;
   items: Array<cartItems>;
