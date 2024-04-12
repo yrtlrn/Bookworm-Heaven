@@ -84,6 +84,8 @@ const NavBar = () => {
 
   const dispatch = useAppDispatch();
 
+
+
   // Logout User
   const [logoutUser] = usePostLogoutUserMutation();
 
@@ -119,7 +121,6 @@ const NavBar = () => {
       setCartOpen(false);
     }
   };
-
 
   // Update User's Cart in DB
   const [updateCart] = usePatchUpdateUserCartMutation();

@@ -4,9 +4,9 @@ import {
 } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { Types } from "mongoose";
-import { UserApi } from "../api/userApi";
+import { REHYDRATE } from "redux-persist";
 
-type cartProps = {
+export type cartProps = {
   total?: number;
   items: Array<cartItems>;
 };
@@ -87,6 +87,11 @@ const cartSlice = createSlice({
         if (state.items[itemIndex].itemQuantity <= 0) {
           state.items.splice(itemIndex, 1);
         }
+
+        if (state.items.length <= 0) {
+          state.total = 0
+        }
+
       },
       prepare: (item: Types.ObjectId) => {
         return { payload: item };
@@ -98,16 +103,29 @@ const cartSlice = createSlice({
     ) => {
       state.items = action.payload;
     },
+    setCart: (state, action: PayloadAction<cartProps>) => {
+      state.total = action.payload.total;
+      state.items = action.payload.items;
+    },
   },
   extraReducers: (builder) => {
-    builder.addMatcher(
-      UserApi.endpoints.getUserCart.matchFulfilled,
-      (state, action: PayloadAction<cartItems[]>) => {
-        console.log(action.payload);
-        console.log("Extra Reducer")
-        // state.items = action.payload;
+    builder.addCase(REHYDRATE, (state, action) => {
+      if (action.type === "persist/REHYDRATE") {
+        const storage =
+          window.localStorage.getItem("persist:root");
+        if (storage) {
+          const data = JSON.parse(storage);
+          const storedTotal: number = parseFloat(
+            data.total
+          );
+
+          JSON.parse(data.items).map((item: cartItems) =>
+            state.items.push(item)
+          );
+          state.total = storedTotal
+        }
       }
-    );
+    });
   },
 });
 
@@ -122,6 +140,7 @@ export const {
   increaseQuantity,
   decreaseQuantity,
   setCartItems,
+  setCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

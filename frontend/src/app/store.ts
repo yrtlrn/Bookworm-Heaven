@@ -1,5 +1,8 @@
 // Redux Toolkit
-import { configureStore } from "@reduxjs/toolkit";
+import {
+  combineReducers,
+  configureStore,
+} from "@reduxjs/toolkit";
 
 // Slices
 import userReducer from "./slices/userSlice";
@@ -10,37 +13,43 @@ import { BookApi } from "./api/bookApi";
 import { UserApi } from "./api/userApi";
 
 // Redux Presist
-import storage from "redux-persist/lib/storage";
+
 import {
+  PERSIST,
   persistReducer,
   persistStore,
 } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
 // Other
 
-const persistConig = {
+const rootPersistConig = {
   key: "root",
   storage,
 };
 
-const persistedReducer = persistReducer(persistConig, cartReducer)
+const reducer = combineReducers({
+  persistedStore: persistReducer(
+    rootPersistConig,
+    cartReducer
+  ),
+  userReducer,
+  cartReducer,
+  [BookApi.reducerPath]: BookApi.reducer,
+  [UserApi.reducerPath]: UserApi.reducer,
+});
 
 export const store = configureStore({
-  reducer: {
-    persistedReducer,
-    userReducer,
-    cartReducer,
-    [BookApi.reducerPath]: BookApi.reducer,
-    [UserApi.reducerPath]: UserApi.reducer,
-  },
-
+  reducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
-      BookApi.middleware,
-      UserApi.middleware
-    ),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [PERSIST],
+      },
+    }).concat(BookApi.middleware, UserApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);
