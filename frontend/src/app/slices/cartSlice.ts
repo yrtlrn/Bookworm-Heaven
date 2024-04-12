@@ -4,7 +4,6 @@ import {
 } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { Types } from "mongoose";
-import { REHYDRATE } from "redux-persist";
 export type cartProps = {
   total?: number;
   items: Array<cartItems>;
@@ -88,9 +87,8 @@ const cartSlice = createSlice({
         }
 
         if (state.items.length <= 0) {
-          state.total = 0
+          state.total = 0;
         }
-
       },
       prepare: (item: Types.ObjectId) => {
         return { payload: item };
@@ -107,7 +105,6 @@ const cartSlice = createSlice({
       state.items = action.payload.items;
     },
   },
-  
 });
 
 export const getCartItems = (state: RootState) =>

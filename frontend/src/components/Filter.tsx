@@ -24,7 +24,7 @@ const Filter = () => {
     formState: { errors },
   } = useForm<filterProps>();
 
-  const nagivate = useNavigate();
+  const navigate = useNavigate();
 
   const onSubmit = async (data: filterProps) => {
     const searchParams: URLSearchParams =
@@ -77,7 +77,7 @@ const Filter = () => {
       );
     }
 
-    nagivate({
+    navigate({
       pathname: "/books/search",
       search: searchParams.toString()
     })

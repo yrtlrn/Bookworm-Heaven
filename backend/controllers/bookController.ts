@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, query } from "express";
 import asyncHandler from "express-async-handler";
 import Book from "../models/bookModel";
 import { Types } from "mongoose";
@@ -175,6 +175,39 @@ const getBookDetail = asyncHandler(
         .json({ message: "Book does not exist" });
     }
     res.status(200).json(book);
+  }
+);
+
+// DESC     Search for a book with title or author
+// MTD      POST /api/v1/books/search
+// ACC      Publice
+const searchBook = asyncHandler(
+  async (req: Request, res: Response) => {
+    let queryOptions: { title?: {}; author?: {} } = {};
+
+    if (req.body.title) {
+      queryOptions = {
+        title: { $regex: req.body.title, $options: "i" },
+      };
+    }
+
+    if (req.body.author) {
+      queryOptions = {
+        ...queryOptions,
+        author: { $regex: req.body.author, $options: "i" },
+      };
+    }
+
+    console.log(queryOptions);
+
+    const books = await Book.find(queryOptions);
+
+    if (!books) {
+      res.status(401);
+      throw new Error("Not books Found");
+    }
+
+    res.status(200).json(books);
   }
 );
 
@@ -389,6 +422,7 @@ const getAllUserSavedBooks = asyncHandler(
   }
 );
 
+// Other
 const constructSearchQuery = (searchQuery: any) => {
   let constructedQuery: any = {};
 
@@ -457,6 +491,20 @@ const constructSearchQuery = (searchQuery: any) => {
     }
   }
 
+  if (searchQuery.title) {
+    constructedQuery.title = {
+      $regex: searchQuery.title,
+      $options: "i",
+    };
+  }
+
+  if (searchQuery.author) {
+    constructedQuery.author = {
+      $regex: searchQuery.author,
+      $options: "i",
+    };
+  }
+
   return constructedQuery;
 };
 
@@ -472,4 +520,5 @@ export {
   saveBookToUser,
   removeBookFromUser,
   getAllUserSavedBooks,
+  searchBook,
 };

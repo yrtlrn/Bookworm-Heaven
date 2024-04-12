@@ -39,6 +39,13 @@ export const BookApi = createApi({
         method: "GET",
       }),
     }),
+    searchBook: builder.mutation<BookProps[], object>({
+      query: (data) => ({
+        url: "/",
+        method: "POST",
+        body: data,
+      }),
+    }),
     getAllBooks: builder.query<getBook, object>({
       query: (queryS: object) => {
         return {
@@ -97,5 +104,6 @@ export const {
   useGetBookDetailsQuery,
   usePostSaveBookToUserMutation,
   useGetUserSavedBooksQuery,
-  useDeleteBookFromUserMutation
+  useDeleteBookFromUserMutation,
+  useSearchBookMutation
 } = BookApi;
