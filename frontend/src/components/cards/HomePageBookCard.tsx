@@ -2,7 +2,6 @@ import { BiStar } from "react-icons/bi";
 import { BookProps } from "../../../../backend/models/bookModel";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
 import ViewDetailsButton from "../buttons/ViewDetailsButton";
 
 type HomePageBookCard = {
@@ -11,22 +10,68 @@ type HomePageBookCard = {
 const HomePageBookCard = ({ data }: HomePageBookCard) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState("right");
+  const { innerWidth: width } = window;
 
-  const nextBook = () => {
+  const nextBook = (step: number) => {
     setDirection("right");
-    if (currentIndex === 9) {
-      setCurrentIndex(0);
-    } else {
-      setCurrentIndex((prev) => prev + 1);
+    // 1 Book
+    if (step === 1) {
+      if (currentIndex === 11) {
+        setCurrentIndex(0);
+        return;
+      } else {
+        setCurrentIndex((prev) => prev + step);
+        return;
+      }
+    }
+    // 2 Books
+    else if (step === 2) {
+      if (currentIndex === 10) {
+        setCurrentIndex(0);
+        return;
+      } else {
+        setCurrentIndex((prev) => prev + step);
+
+        return;
+      }
+    }
+    // 3 Books
+    else if (step === 3) {
+      if (currentIndex === 9) {
+        setCurrentIndex(0);
+        return;
+      } else {
+        setCurrentIndex((prev) => prev + step);
+        return;
+      }
     }
   };
 
-  const prevBook = () => {
+  const prevBook = (step: number) => {
     setDirection("left");
-    if (currentIndex === 0) {
-      setCurrentIndex(9);
-    } else {
-      setCurrentIndex((prev) => prev - 1);
+    // 1 Book
+    if (step === 1) {
+      if (currentIndex === 0) {
+        setCurrentIndex(11);
+      } else {
+        setCurrentIndex((prev) => prev - step);
+      }
+    }
+    // 2 Books
+    if (step === 2) {
+      if (currentIndex === 0) {
+        setCurrentIndex(10);
+      } else {
+        setCurrentIndex((prev) => prev - step);
+      }
+    }
+    // 3 Books
+    if (step === 3) {
+      if (currentIndex === 0) {
+        setCurrentIndex(9);
+      } else {
+        setCurrentIndex((prev) => prev - step);
+      }
     }
   };
 
@@ -57,14 +102,53 @@ const HomePageBookCard = ({ data }: HomePageBookCard) => {
     },
   };
 
-  const swipeConfidenceThreshold = 10000;
-  const swipePower = (offset: number, velocity: number) => {
-    return Math.abs(offset) * velocity;
+  const content = (index: number) => {
+    return (
+      <section className="grid grid-cols-1 grid-rows-2 gap-2 my-2 px-11">
+        <figure>
+          <img
+            src={data[index].imgUrl}
+            alt={`${data[index].title} Image`}
+            width={200}
+            height={100}
+          />
+        </figure>
+        <div className="items-center p-1 text-center card-body">
+          <h2 className="text-xl card-title lg:text-2xl">
+            {data[index].title.length > 50
+              ? data[index].title.slice(0, 50) + "..."
+              : data[index].title}
+          </h2>
+          <p className="flex text-xl md:text-2xl lg:text-3xl">
+            {Array.from(
+              { length: data[index].stars },
+              (_item, index) => (
+                <BiStar key={index} />
+              )
+            )}
+          </p>
+          <p className="text-xl md:text-2xl lg:text-3xl">
+            by {data[index].author}
+          </p>
+          <p className="text-xl md:text-2xl lg:text-3xl">
+            ${data[index].price}
+          </p>
+
+          <button className="text-2xl md:text-3xl w-fit btn btn-outline lg:text-4xl">
+            <ViewDetailsButton
+              bookTitle={`${data[index].title}`}
+              bookId={data[index]._id}
+              text="More Details"
+            />
+          </button>
+        </div>
+      </section>
+    );
   };
 
   return (
-    <section className="w-full carousel">
-      <div className=" w-full p-2 shadow-xl min-h-[500px] card bg-base-300 relative">
+    <section className="w-full carousel ">
+      <div className=" w-full p-2 shadow-xl min-h-[500px] md:min-h-[600px] lg:min-h-[700px] card bg-base-300 relative ">
         <AnimatePresence>
           <motion.div
             variants={slideVariants}
@@ -84,68 +168,71 @@ const HomePageBookCard = ({ data }: HomePageBookCard) => {
               },
               opacity: { duration: 0.2 },
             }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={1}
-            onDragEnd={(_e, { offset, velocity }) => {
-              const swipe = swipePower(
-                offset.x,
-                velocity.x
-              );
-              if (swipe < -swipeConfidenceThreshold) {
-                nextBook();
-              } else if (swipe > swipeConfidenceThreshold) {
-                prevBook();
-              }
-            }}
-            className="absolute top-0 left-0 grid w-full h-full grid-cols-1 p-1 border-2 rounded-md grid-row-2"
+            className="absolute top-0 left-0 grid w-full h-full grid-cols-1 grid-rows-1 p-1 border-2 rounded-md md:grid-cols-2 lg:grid-cols-3 "
           >
-            <figure>
-              <img
-                src={data[currentIndex].imgUrl}
-                alt={`${data[currentIndex].title} Image`}
-                width={200}
-                height={100}
-              />
-            </figure>
-            <div className="items-center p-1 text-center card-body">
-              <h2 className="card-title">
-                {data[currentIndex].title.length > 50
-                  ? data[currentIndex].title.slice(0, 50) +
-                    "..."
-                  : data[currentIndex].title}
-              </h2>
-              <p className="flex">
-                {Array.from(
-                  { length: data[currentIndex].stars },
-                  (_item, index) => (
-                    <BiStar key={index} />
-                  )
-                )}
-              </p>
-              <p>by {data[currentIndex].author}</p>
-              <p>${data[currentIndex].price}</p>
-              <p>{data[currentIndex].description}</p>
-              <button className="text-2xl btn btn-outline">
-                <ViewDetailsButton
-                  bookTitle={`${data[currentIndex].title}`}
-                  bookId={data[currentIndex]._id}
-                  text="More Details"
-                />
-              </button>
+            <div className="grid w-full h-full grid-cols-1 grid-rows-1 ">
+              {content(currentIndex)}
             </div>
+
+            {width > 640 ? (
+              <div className="hidden md:grid md:w-full md:h-full md:grid-cols-1 md:grid-rows-1">
+                {content(currentIndex + 1)}
+              </div>
+            ) : (
+              ""
+            )}
+            {width > 768 ? (
+              <div className="hidden lg:grid lg:w-full lg:h-full lg:grid-cols-1 lg:grid-rows-1">
+                {content(currentIndex + 2)}
+              </div>
+            ) : (
+              ""
+            )}
           </motion.div>
         </AnimatePresence>
 
-        <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+        {/* 1 Book */}
+        <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2 md:hidden">
           <a
-            onClick={() => prevBook()}
+            onClick={() => prevBook(1)}
             className="btn btn-circle bg-slate-700 hover:bg-slate-500"
           >
             ❮
           </a>
           <a
-            onClick={() => nextBook()}
+            onClick={() => nextBook(1)}
+            className="btn btn-circle bg-slate-700 hover:bg-slate-500"
+          >
+            ❯
+          </a>
+        </div>
+
+        {/* 2 Book */}
+        <div className="absolute justify-between hidden transform -translate-y-1/2 left-5 right-5 top-1/2 md:visible md:flex">
+          <a
+            onClick={() => prevBook(2)}
+            className="btn btn-circle bg-slate-700 hover:bg-slate-500"
+          >
+            ❮
+          </a>
+          <a
+            onClick={() => nextBook(2)}
+            className="btn btn-circle bg-slate-700 hover:bg-slate-500"
+          >
+            ❯
+          </a>
+        </div>
+
+        {/* 3 Book */}
+        <div className="absolute justify-between hidden transform -translate-y-1/2 left-5 right-5 top-1/2 lg:visible lg:flex">
+          <a
+            onClick={() => prevBook(3)}
+            className="btn btn-circle bg-slate-700 hover:bg-slate-500"
+          >
+            ❮
+          </a>
+          <a
+            onClick={() => nextBook(3)}
             className="btn btn-circle bg-slate-700 hover:bg-slate-500"
           >
             ❯

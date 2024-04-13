@@ -49,7 +49,6 @@ const userSlice = createSlice({
           const storeData = {
             total: total,
             items: payload.data,
-            expiry: new Date().getTime()
           };
           localStorage.setItem(
             "cart",

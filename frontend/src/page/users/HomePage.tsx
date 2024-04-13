@@ -6,7 +6,6 @@ import {
   useGetLatestBooksQuery,
 } from "../../app/api/bookApi";
 import HomePageBookDisplayCard from "../../components/cards/HomePageBookDisplayCard";
-import AddBookRequest from "../../components/AddBookRequest";
 import { useGetAuthCheckQuery } from "../../app/api/userApi";
 import { useEffect } from "react";
 import { useAppDispatch } from "../../app/hooks/hook";
@@ -26,11 +25,6 @@ function HomePage() {
             total: dataParsed.total,
             items: dataParsed.items,
           })
-        );
-        const startTime = dataParsed.expiry as Date;
-        const diffSec = Math.floor(
-          // @ts-ignore
-          ((new Date().getTime() - startTime) / 1000) % 60
         );
       }
     }
@@ -56,7 +50,6 @@ function HomePage() {
         title="Latest"
         getBookFunction={useGetLatestBooksQuery}
       />
-      <AddBookRequest />
     </section>
   );
 }

@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 
 import logoImage from "../../assets/logo.png";
 import { motion } from "framer-motion";
-import { Link, createSearchParams } from "react-router-dom";
+import {
+  Link,
+  createSearchParams,
+  useNavigate,
+} from "react-router-dom";
 
 // Redux Toolkit
 import { isUserAuthorized } from "../../app/slices/userSlice";
@@ -31,9 +35,14 @@ const NavBar = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   // Nav Dropdown animation
   const topBarVariants = {
-    open: { opacity: 1, rotate: 50, y: 15 },
+    open: {
+      opacity: 1,
+      rotate: -40,
+    },
     closed: { opacity: 1 },
   };
   const middleBarVariants = {
@@ -41,19 +50,22 @@ const NavBar = () => {
     closed: { opacity: 1, x: 0 },
   };
   const bottomBarVariants = {
-    open: { opacity: 1, rotate: -50, y: -9 },
+    open: {
+      opacity: 1,
+      rotate: 40,
+    },
     closed: { opacity: 1 },
   };
 
   const navDropDownVariants = {
     open: { y: 5 },
-    closed: { y: -400 },
+    closed: { y: -1000 },
   };
 
   // Cart animation
   const cartDropDownVariants = {
     open: { y: 5 },
-    closed: { y: -400 },
+    closed: { y: -1000 },
   };
 
   // Close Nav dropdown
@@ -75,8 +87,6 @@ const NavBar = () => {
   const cartTotal = useAppSelector(getTotalPrice);
 
   const dispatch = useAppDispatch();
-
-
 
   // Logout User
   const [logoutUser] = usePostLogoutUserMutation();
@@ -123,14 +133,16 @@ const NavBar = () => {
       localStorage.setItem(
         "cart",
         JSON.stringify({
-          total: cartItems
-            .reduce(
-              (total, amount) =>
-                total +
-                amount.itemPrice * amount.itemQuantity,
-              0
-            )
-            .toFixed(2),
+          total: parseFloat(
+            cartItems
+              .reduce(
+                (total, amount) =>
+                  total +
+                  amount.itemPrice * amount.itemQuantity,
+                0
+              )
+              .toFixed(2)
+          ),
           items: cartItems,
         })
       );
@@ -138,17 +150,20 @@ const NavBar = () => {
   }, [cartItems]);
 
   useEffect(() => {
-    const localdata = localStorage.getItem('cart')
+    const localdata = localStorage.getItem("cart");
     if (localdata) {
-      const parsedData = JSON.parse(localdata)
-      if (parsedData.items.length > 0 && cartItems.length === 0) {
-        dispatch(setCart({
-          total: parseFloat(parsedData.total),
-          items: parsedData.items
-        }))
-       
+      const parsedData = JSON.parse(localdata);
+      if (
+        parsedData.items.length > 0 &&
+        cartItems.length === 0
+      ) {
+        dispatch(
+          setCart({
+            total: parseFloat(parsedData.total),
+            items: parsedData.items,
+          })
+        );
       }
-      
     }
   }, []);
 
@@ -159,7 +174,7 @@ const NavBar = () => {
         <section>
           <button>
             <a
-              className="flex flex-col items-center"
+              className="flex flex-col items-center text-xl md:text-2xl lg:text-3xl"
               href="/"
             >
               <img
@@ -167,7 +182,7 @@ const NavBar = () => {
                 alt="Logo Image"
                 height={50}
                 width={50}
-                className="items-center"
+                className="items-center size-10 md:size-16 lg:size-20"
               />
               <h1 className="font-bold">Bookworm Heaven</h1>
             </a>
@@ -181,15 +196,15 @@ const NavBar = () => {
           >
             <button
               id="CartButton"
-              className="btn btn-ghost"
+              className=" btn btn-ghost"
               onClick={() => toggleCartDropdown()}
             >
               <FaShoppingCart
                 id="#CartButton"
-                className="text-2xl "
+                className="text-4xl md:text-5xl lg:text-6xl"
               />
             </button>
-            <span className="absolute bottom-0 left-0 rounded-lg  w-[20px] ">
+            <span className="absolute bottom-0 left-0 rounded-lg  w-[20px] text-lg md:text-xl lg:text-2xl">
               {cartItems.reduce(
                 (total, amount) =>
                   total + amount.itemQuantity,
@@ -205,19 +220,19 @@ const NavBar = () => {
             <motion.div
               animate={navOpen ? "open" : "closed"}
               variants={topBarVariants}
-              className="h-1 bg-white w-9"
+              className="h-1 origin-right bg-white w-9 md:h-2 md:w-14 lg:h-3 lg:w-16"
               id="NavButton"
             />
             <motion.div
               animate={navOpen ? "open" : "closed"}
               variants={middleBarVariants}
-              className="h-1 bg-white w-9"
+              className="h-1 bg-white w-9 md:h-2 md:w-14 lg:h-3 lg:w-16"
               id="NavButton"
             />
             <motion.div
               animate={navOpen ? "open" : "closed"}
               variants={bottomBarVariants}
-              className="h-1 bg-white w-9"
+              className="h-1 origin-right bg-white w-9 md:h-2 md:w-14 lg:h-3 lg:w-16"
               id="NavButton"
             />
           </button>
@@ -228,9 +243,9 @@ const NavBar = () => {
       <section className="relative z-[1]">
         <motion.div
           animate={navOpen ? "open" : "closed"}
-          initial={{ y: -400 }}
+          initial={{ y: -1000 }}
           variants={navDropDownVariants}
-          className="absolute flex justify-between w-full bg-base-300 rounded-box h-fit"
+          className="absolute flex justify-around w-full bg-base-300 rounded-box h-fit"
         >
           <div className="flex flex-col gap-4 p-3 text-center">
             <Link
@@ -240,6 +255,7 @@ const NavBar = () => {
                   type: "Most Popular",
                 })}`,
               }}
+              className="text-xl link-hover md:text-2xl lg:text-3xl"
             >
               Most Popular
             </Link>
@@ -250,6 +266,7 @@ const NavBar = () => {
                   type: "Trending",
                 })}`,
               }}
+              className="text-xl link-hover md:text-2xl lg:text-3xl"
             >
               Trending
             </Link>
@@ -260,6 +277,7 @@ const NavBar = () => {
                   type: "Latest",
                 })}`,
               }}
+              className="text-xl link-hover md:text-2xl lg:text-3xl"
             >
               Latest
             </Link>
@@ -268,18 +286,47 @@ const NavBar = () => {
           <div className="flex flex-col gap-4 p-3 text-center">
             {isAuth ? (
               <>
-                <Link to="/user/orders">Your Orders</Link>
-                <Link to="/user/books">Saved Books</Link>
+                <Link
+                  to="/user/orders"
+                  className="text-xl link-hover md:text-2xl lg:text-3xl"
+                >
+                  Your Orders
+                </Link>
+                <Link
+                  to="/user/books"
+                  className="text-xl link-hover md:text-2xl lg:text-3xl"
+                >
+                  Saved Books
+                </Link>
 
-                <Link to="/user/setting">Setting</Link>
-                <Link to="/" onClick={() => logoutFun()}>
+                <Link
+                  to="/user/setting"
+                  className="text-xl link-hover md:text-2xl lg:text-3xl"
+                >
+                  Setting
+                </Link>
+                <Link
+                  to="/"
+                  onClick={() => logoutFun()}
+                  className="text-xl link-hover md:text-2xl lg:text-3xl"
+                >
                   Logout
                 </Link>
               </>
             ) : (
               <>
-                <Link to="/log-in">Login</Link>
-                <Link to="/sign-up">Signup</Link>
+                <Link
+                  to="/log-in"
+                  className="text-xl link-hover md:text-2xl lg:text-3xl"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/sign-up"
+                  className="text-xl link-hover md:text-2xl lg:text-3xl"
+                >
+                  Signup
+                </Link>
               </>
             )}
           </div>
@@ -291,7 +338,7 @@ const NavBar = () => {
         <section className="relative">
           <motion.div
             animate={cartOpen ? "open" : "closed"}
-            initial={{ y: -400 }}
+            initial={{ y: -1000 }}
             variants={cartDropDownVariants}
             className="absolute flex flex-col items-center justify-center w-full gap-3 p-2 bg-base-300 rounded-box h-fit"
           >
@@ -303,7 +350,7 @@ const NavBar = () => {
                   key={index}
                   className="grid grid-cols-2 grid-rows-1 gap-3 p-2"
                 >
-                  <h2>
+                  <h2 className="text-lg md:text-xl">
                     {item.itemName
                       ? item.itemName.length > 50
                         ? item.itemName.slice(0, 50)
@@ -328,7 +375,7 @@ const NavBar = () => {
                           min={0}
                           value={item.itemQuantity}
                           readOnly
-                          className=" text-center w-[30%] input "
+                          className=" text-center w-[30%] input text-xl "
                         />
                         <button
                           className="text-2xl btn max-[375px]:size-2"
@@ -341,7 +388,7 @@ const NavBar = () => {
                           -
                         </button>
                       </div>
-                      <p className="text-end">
+                      <p className="text-lg md:text-xl text-end">
                         $
                         {(
                           item.itemQuantity! *
@@ -354,8 +401,19 @@ const NavBar = () => {
               ))
             )}
 
-            <div className="flex justify-end w-full border-t-2">
-              <p>${cartTotal}</p>
+            <div className="flex items-center justify-end w-full gap-2 p-2 border-t-2">
+              <p className="text-2xl">
+                ${cartTotal?.toFixed(2)}{" "}
+              </p>
+              <button
+                className="text-2xl btn btn-outline"
+                onClick={() => {
+                  setCartOpen(false);
+                  navigate("/user/checkout");
+                }}
+              >
+                Checkout
+              </button>
             </div>
           </motion.div>
         </section>

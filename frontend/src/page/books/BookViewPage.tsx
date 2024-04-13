@@ -124,7 +124,7 @@ const BookViewPage = () => {
       content = (
         <div>
           <section className="flex flex-col items-center w-full ">
-            <div className="w-[80%] shadow-xl min-h-fit card bg-base-300 ">
+            <div className="w-[80%] shadow-xl min-h-fit card bg-base-300">
               <div className="flex flex-col w-full h-full gap-2 p-1 rounded-md">
                 {/* Pagination */}
                 <div className="flex items-center justify-center p-1 ">

@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="text-center border-t-2">
+    <footer className="text-xl text-center border-t-2 md:text-2xl lg:text-3xl">
       <p>
         Copyright &#169;. Bookworm Heaven. All right
         Reserved.{" "}

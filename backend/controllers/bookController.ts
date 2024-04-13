@@ -56,7 +56,7 @@ const getTrendingBooks = asyncHandler(
     const queryOptions = constructSearchQuery(req.query);
 
     const page = req.query.page || 1;
-    const limit = 10;
+    const limit = 12;
     const skip = (page as number) * 10 - 10;
 
     queryOptions.type = "Trending";
@@ -94,7 +94,7 @@ const getPopularBooks = asyncHandler(
     const queryOptions = constructSearchQuery(req.query);
 
     const page = req.query.page || 1;
-    const limit = 10;
+    const limit = 12;
     const skip = (page as number) * 10 - 10;
 
     queryOptions.type = "Most Popular";
@@ -132,7 +132,7 @@ const getLatestBooks = asyncHandler(
     const queryOptions = constructSearchQuery(req.query);
 
     const page = req.query.page || 1;
-    const limit = 10;
+    const limit = 12;
     const skip = (page as number) * 10 - 10;
 
     queryOptions.type = "Latest";

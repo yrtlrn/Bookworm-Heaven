@@ -1,10 +1,5 @@
-import { create } from "domain";
 import { useForm } from "react-hook-form";
-import {
-  createSearchParams,
-  generatePath,
-  useNavigate,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type filterProps = {
   starMin: number;
@@ -79,14 +74,13 @@ const Filter = () => {
 
     navigate({
       pathname: "/books/search",
-      search: searchParams.toString()
-    })
-    
+      search: searchParams.toString(),
+    });
   };
 
   return (
     <section className="p-2 mt-2 border-2 border-white bg-base-200">
-      <h2 className="text-2xl font-bold text-center">
+      <h2 className="text-2xl font-bold text-center md:text-3xl">
         Filter
       </h2>
       <form
@@ -95,11 +89,11 @@ const Filter = () => {
       >
         {/* Star Inputs */}
         <div className="grid grid-cols-3 grid-rows-1 gap-2">
-          <h3 className="flex items-center justify-center text-xl">
+          <h3 className="flex items-center justify-center text-xl md:text-2xl lg:text-3xl">
             Stars
           </h3>
           <input
-            className="input input-bordered"
+            className="input input-bordered md:text-xl lg:text-2xl"
             type="number"
             min={0}
             max={5}
@@ -108,7 +102,7 @@ const Filter = () => {
             {...register("starMin")}
           />
           <input
-            className="input input-bordered"
+            className="input input-bordered md:text-xl lg:text-2xl"
             type="number"
             min={0}
             max={5}
@@ -139,7 +133,7 @@ const Filter = () => {
 
         {/* Price Inputs */}
         <div className="grid grid-cols-3 grid-rows-1 gap-2">
-          <h3 className="flex items-center justify-center text-xl">
+          <h3 className="flex items-center justify-center text-xl md:text-2xl lg:text-3xl">
             Price
           </h3>
           <div className="relative">
@@ -147,7 +141,7 @@ const Filter = () => {
               $
             </span>
             <input
-              className="w-full input input-bordered"
+              className="w-full input input-bordered md:text-xl lg:text-2xl"
               type="number"
               min={0}
               step={0.01}
@@ -160,7 +154,7 @@ const Filter = () => {
               $
             </span>
             <input
-              className="w-full input input-bordered"
+              className="w-full input input-bordered md:text-xl lg:text-2xl"
               type="number"
               min={0}
               step={0.01}
@@ -191,18 +185,18 @@ const Filter = () => {
 
         {/* Reviews Input */}
         <div className="grid grid-cols-3 grid-rows-1 gap-2">
-          <h3 className="flex items-center justify-center text-xl">
+          <h3 className="flex items-center justify-center text-xl md:text-2xl lg:text-3xl">
             Reviews
           </h3>
           <input
-            className="input input-bordered"
+            className="input input-bordered md:text-xl lg:text-2xl"
             type="number"
             min={0}
             placeholder="Min"
             {...register("reviewMin")}
           />
           <input
-            className="input input-bordered"
+            className="input input-bordered md:text-xl lg:text-2xl"
             type="number"
             min={0}
             placeholder="Max"
@@ -230,11 +224,11 @@ const Filter = () => {
         )}
         {/* Type Inputs */}
         <div className="grid grid-cols-3 grid-rows-1 gap-2">
-          <h3 className="flex items-center justify-center text-xl">
+          <h3 className="flex items-center justify-center text-xl md:text-2xl lg:text-3xl">
             Type
           </h3>
           <select
-            className="col-span-2 text-xl select select-bordered"
+            className="col-span-2 text-xl select select-bordered md:text-2xl lg:text-3xl"
             {...register("typeValue")}
           >
             <option> </option>
@@ -245,7 +239,7 @@ const Filter = () => {
         </div>
 
         <button
-          className="col-span-3 text-xl btn-outline btn bg-base-100"
+          className="col-span-3 text-xl btn-outline btn bg-base-100 md:text-2xl lg:text-3xl"
           type="submit"
         >
           Filter Books
