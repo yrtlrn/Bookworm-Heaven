@@ -1,0 +1,16 @@
+PORT = 3000
+NODE_ENV = "development"
+
+# Database
+MONGODB_URI = "Your Mongo Uri"
+
+# Session
+SESSION_URI = "Your Mongo Uri"
+SESSION_KEY = "Random String"
+
+# Limiter
+LIMITER_URI = "Your Mongo Uri"
+
+
+# Frontend
+FRONTEND_URL = http://localhost:5173

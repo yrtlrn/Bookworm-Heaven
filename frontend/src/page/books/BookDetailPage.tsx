@@ -106,16 +106,16 @@ const BookDetailPage = () => {
     );
   } else if (isSuccess) {
     content = (
-      <section className="flex flex-col m-3">
+      <section className="flex flex-col h-full mx-5 my-5 min-h-[70vh] gap-2 md:grid md:grid-cols-2 md:grid-row-2">
+        <h1 className="col-span-2 text-center bold text-r-2xl">
+          {book.title}
+          <p className="text-r-lg">By {book.author}</p>
+        </h1>
         <div className="flex flex-col items-center justify-center gap-1">
-          <h1 className="text-2xl text-center bold">
-            {book.title}
-          </h1>
-          <p>By {book.author}</p>
           <figure className="show">
             <img src={book.imgUrl} />
           </figure>
-          <span className="flex">
+          <span className="flex text-r-base">
             {Array.from(
               { length: book.stars },
               (_item, index) => (
@@ -123,34 +123,34 @@ const BookDetailPage = () => {
               )
             )}
           </span>
-          <span>
+          <span className="text-r-base">
             {book.reviews
               .toString()
               .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
             Reviews
           </span>
         </div>
-        <div className="flex flex-col gap-3 py-2">
-          <p className="p-2 border">{book.description}</p>
+        <div className="flex flex-col justify-around gap-3 py-2">
+          <p className="p-2 border text-r-base">{book.description}</p>
           <button
-            className="w-full text-3xl btn"
+            className="w-full text-r-3xl btn btn-outline"
             onClick={saveBook}
           >
             Save This Book
           </button>
           <div className="flex flex-col items-center justify-center border-t-2 ">
-            <label>
+            <label className="text-r-lg">
               Quantity:
               <input
                 id="itemQuantity"
                 type="number"
                 min={1}
                 defaultValue={1}
-                className="m-2 input input-bordered"
+                className="m-2 input input-bordered text-r-lg"
               />
             </label>
             <button
-              className="text-2xl btn w-[80%]"
+              className="text-r-2xl btn btn-outline w-[80%]"
               onClick={() =>
                 addToCartFun(
                   book._id,

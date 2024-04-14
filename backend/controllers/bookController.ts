@@ -211,91 +211,6 @@ const searchBook = asyncHandler(
   }
 );
 
-// DESC     Add new book
-// MTD      POST /api/v1/books/book
-// ACC      Private
-const addNewBook = asyncHandler(
-  async (req: Request, res: Response) => {
-    const addedBook = await Book.create(req.body);
-
-    if (!addedBook) {
-      res
-        .status(500)
-        .json({ message: "Something went wrong" });
-    }
-    res
-      .status(201)
-      .json({ message: "Book added successfully" });
-  }
-);
-
-// DESC     Delete a book
-// MTD      DELETE /api/v1/books/book
-// ACC      Private
-const deleteBook = asyncHandler(
-  async (req: Request, res: Response) => {
-    const deleteBook = await Book.findByIdAndDelete(
-      req.body.bookId
-    );
-
-    if (!deleteBook) {
-      res
-        .status(500)
-        .json({ message: "Something went wrong" });
-    }
-
-    res
-      .status(200)
-      .json({ message: "Book deleted successfully" });
-  }
-);
-
-// DESC     Update a Book
-// MTD      PUT /api/v1/books/book
-// ACC      Private
-const updateBook = asyncHandler(
-  async (req: Request, res: Response) => {
-    const {
-      title,
-      reviews,
-      price,
-      stars,
-      imgUrl,
-      description,
-      type,
-    } = req.body;
-
-    if (
-      !title ||
-      !reviews ||
-      !price ||
-      !stars ||
-      !imgUrl ||
-      !description ||
-      !type
-    ) {
-      res.status(422).json({
-        message: "Please enter all the required fields",
-      });
-    }
-
-    const updatedBook = await Book.findByIdAndUpdate(
-      req.query.bookId,
-      req.body
-    );
-
-    if (!updatedBook) {
-      res
-        .status(500)
-        .json({ message: "Something went wrong" });
-    }
-
-    res
-      .status(200)
-      .json({ message: "Book Updated Successfully" });
-  }
-);
-
 // DESC     Save a book to user's list
 // MTD      PATCH /api/v1/books/user/save
 // ACC      Private
@@ -513,10 +428,7 @@ export {
   getTrendingBooks,
   getPopularBooks,
   getLatestBooks,
-  addNewBook,
   getBookDetail,
-  deleteBook,
-  updateBook,
   saveBookToUser,
   removeBookFromUser,
   getAllUserSavedBooks,

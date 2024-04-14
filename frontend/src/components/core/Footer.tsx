@@ -1,11 +1,13 @@
 const Footer = () => {
   return (
-    <footer className="text-xl text-center border-t-2 md:text-2xl lg:text-3xl">
+    <footer className="text-r-xl text-center border-t-2  ">
       <p>
         Copyright &#169;. Bookworm Heaven. All right
         Reserved.{" "}
       </p>
-      <span className="font-bold text-yellow-500 ">NOT A REAL WEBSTIE</span>
+      <span className="font-bold text-yellow-500 ">
+        NOT A REAL WEBSTIE
+      </span>
     </footer>
   );
 };

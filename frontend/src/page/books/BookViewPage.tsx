@@ -116,101 +116,103 @@ const BookViewPage = () => {
   } else if (isSuccess) {
     if (books.data.length <= 0) {
       content = (
-        <div className="text-3xl text-center">
+        <div className="text-center text-r-3xl">
           No Books Found
         </div>
       );
     } else {
+      const pagination = () => {
+        window.scroll(0,0)
+        return (
+          <div className="flex items-center justify-center p-1 ">
+            {books.pagination.totalPages > 10 ? (
+              <button
+                className="pagArrowLeft"
+                onClick={() =>
+                  pageSection - 10 < 0
+                    ? ""
+                    : setPageSection((prev) => prev - 10)
+                }
+              >
+                <FaArrowLeft />
+              </button>
+            ) : (
+              ""
+            )}
+            <div className="flex justify-center w-full h-10 join">
+              {Array.from(
+                {
+                  length: books.pagination.totalPages,
+                },
+                (_item, index) =>
+                  index + 1 < 11 &&
+                  (index + pageSection <
+                  books.pagination.totalPages ? (
+                    <button
+                      className={`w-full join-items hover:bg-slate-500  ${
+                        page === index + 1 + pageSection
+                          ? "bg-slate-600"
+                          : ""
+                      }`}
+                      onClick={() =>
+                        changePage(index + 1 + pageSection)
+                      }
+                      key={index}
+                    >
+                      {index + 1 + pageSection}
+                    </button>
+                  ) : (
+                    ""
+                  ))
+              )}
+            </div>
+            {books.pagination.totalPages > 10 ? (
+              <button
+                className="pagArrowRight"
+                onClick={() =>
+                  pageSection + 10 >
+                  books.pagination.totalPages
+                    ? ""
+                    : setPageSection((prev) => prev + 10)
+                }
+              >
+                <FaArrowRight />
+              </button>
+            ) : (
+              ""
+            )}
+          </div>
+        );
+      };
+
       content = (
         <div>
           <section className="flex flex-col items-center w-full ">
             <div className="w-[80%] shadow-xl min-h-fit card bg-base-300">
               <div className="flex flex-col w-full h-full gap-2 p-1 rounded-md">
                 {/* Pagination */}
-                <div className="flex items-center justify-center p-1 ">
-                  {books.pagination.totalPages > 10 ? (
-                    <button
-                      className="pagArrowLeft"
-                      onClick={() =>
-                        pageSection - 10 < 0
-                          ? ""
-                          : setPageSection(
-                              (prev) => prev - 10
-                            )
-                      }
-                    >
-                      <FaArrowLeft />
-                    </button>
-                  ) : (
-                    ""
-                  )}
-                  <div className="flex justify-center w-full h-10 join">
-                    {Array.from(
-                      {
-                        length: books.pagination.totalPages,
-                      },
-                      (_item, index) =>
-                        index + 1 < 11 &&
-                        (index + pageSection <
-                        books.pagination.totalPages ? (
-                          <button
-                            className={`w-full join-items  ${
-                              page ===
-                              index + 1 + pageSection
-                                ? "bg-slate-600"
-                                : ""
-                            }`}
-                            onClick={() =>
-                              changePage(
-                                index + 1 + pageSection
-                              )
-                            }
-                            key={index}
-                          >
-                            {index + 1 + pageSection}
-                          </button>
-                        ) : (
-                          ""
-                        ))
-                    )}
-                  </div>
-                  {books.pagination.totalPages > 10 ? (
-                    <button
-                      className="pagArrowRight"
-                      onClick={() =>
-                        pageSection + 10 >
-                        books.pagination.totalPages
-                          ? ""
-                          : setPageSection(
-                              (prev) => prev + 10
-                            )
-                      }
-                    >
-                      <FaArrowRight />
-                    </button>
-                  ) : (
-                    ""
-                  )}
-                </div>
+                {pagination()}
 
                 {/* Main Content */}
                 {books.data.map((book) => (
                   <div
                     key={book.title}
-                    className="grid grid-cols-2 grid-rows-2 gap-3 p-3 border-2 border-white max-[420px]:flex max-[420px]:flex-col "
+                    className="grid grid-cols-2 grid-rows-1 gap-3 p-3 border-2 border-white max-[420px]:flex max-[420px]:flex-col "
                   >
                     <figure>
                       <img
                         src={book.imgUrl}
                         alt={`${book.title} Image`}
-                        width={200}
+                        width={300}
                         height={300}
                       />
                     </figure>
                     <div className="flex flex-col justify-center gap-5 text-center">
                       <div>
-                        <h1>{book.title}</h1>
-                        <span className="flex items-center justify-center">
+                        <h1 className="text-r-base">
+                          {book.title}
+                        </h1>
+                        <span className="flex items-center justify-center text-r-lg">
                           {Array.from(
                             { length: book.stars },
                             (_item, index) => (
@@ -219,9 +221,13 @@ const BookViewPage = () => {
                           )}
                         </span>
                       </div>
-                      <p>By {book.author}</p>
-                      <p>${book.price}</p>
-                      <p>
+                      <p className="text-r-lg">
+                        By {book.author}
+                      </p>
+                      <p className="text-r-lg">
+                        ${book.price}
+                      </p>
+                      <p className="text-r-lg">
                         Reviews:{" "}
                         {book.reviews
                           .toString()
@@ -233,7 +239,7 @@ const BookViewPage = () => {
                     </div>
 
                     <div className="flex flex-col items-center col-span-2 gap-2 text-white ">
-                      <p>
+                      <p className="text-r-lg">
                         {book.description.length > 50
                           ? `${book.description.slice(
                               0,
@@ -242,7 +248,7 @@ const BookViewPage = () => {
                           : book.description}
                       </p>
                       <div className="grid grid-cols-2 grid-rows-2 gap-3">
-                        <button className="text-xl btn btn-outline h-fit">
+                        <button className="text-r-xl btn btn-outline h-fit">
                           <ViewDetailsButton
                             bookTitle={`${book.title}`}
                             bookId={book._id}
@@ -250,13 +256,13 @@ const BookViewPage = () => {
                           />
                         </button>
                         <button
-                          className="text-xl btn btn-outline h-fit"
+                          className="text-r-xl btn btn-outline h-fit"
                           onClick={() => saveBook(book._id)}
                         >
                           Save Book
                         </button>
                         <button
-                          className="col-span-2 text-xl btn btn-outline"
+                          className="col-span-2 text-r-xl btn btn-outline"
                           onClick={() =>
                             isAuth
                               ? dispatch(
@@ -279,6 +285,8 @@ const BookViewPage = () => {
                     </div>
                   </div>
                 ))}
+                {/* Pagination */}
+                {pagination()}
               </div>
             </div>
           </section>

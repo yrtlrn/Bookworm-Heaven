@@ -21,7 +21,7 @@ const SavedBooksPage = () => {
     if (dataLength <= 0) {
       content = (
         <div>
-          <h1 className="flex items-center justify-center text-3xl">
+          <h1 className="flex items-center justify-center text-r-3xl">
             List is Empty
           </h1>
         </div>

@@ -87,21 +87,23 @@ const ProfilePage = () => {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center gap-5 mt-10">
-      <h1 className="text-3xl font-bold">Sign Up</h1>
+    <section className="flex flex-col items-center justify-center gap-5 my-10">
+      <h1 className="font-bold text-r-3xl">
+        Update Profile
+      </h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-5">
           <div className="flex flex-col justify-start gap-2">
             <label
               htmlFor="signupFirstName"
-              className="text-2xl"
+              className="text-r-2xl"
             >
               First Name
             </label>
             <input
               type="text"
               id="signupFirstName"
-              className="input input-bordered"
+              className="w-full input input-bordered text-r-xl"
               {...register("firstName", {
                 required: {
                   value: true,
@@ -130,14 +132,14 @@ const ProfilePage = () => {
           <div className="flex flex-col justify-start gap-2">
             <label
               htmlFor="signupLastName"
-              className="text-2xl"
+              className="text-r-2xl"
             >
               Last Name
             </label>
             <input
               type="text"
               id="signupLastName"
-              className="input input-bordered"
+              className="w-full input input-bordered text-r-xl"
               {...register("lastName", {
                 required: {
                   value: true,
@@ -166,14 +168,14 @@ const ProfilePage = () => {
           <div className="flex flex-col justify-start gap-2">
             <label
               htmlFor="signupEmail"
-              className="text-2xl"
+              className="text-r-2xl"
             >
               Email
             </label>
             <input
               type="email"
               id="signupEmail"
-              className="input input-bordered"
+              className="w-full input input-bordered text-r-xl"
               {...register("email", {
                 required: {
                   value: true,
@@ -193,7 +195,7 @@ const ProfilePage = () => {
           <div className="flex flex-col justify-start gap-2">
             <label
               htmlFor="signupPassword"
-              className="text-2xl"
+              className="text-r-2xl"
             >
               Current Password
             </label>
@@ -201,7 +203,7 @@ const ProfilePage = () => {
               <input
                 type="password"
                 id="signupPassword"
-                className="input input-bordered"
+                className="w-full input input-bordered text-r-xl"
                 {...register("currentPassword", {
                   required: {
                     value: true,
@@ -216,7 +218,7 @@ const ProfilePage = () => {
               />
               <button
                 type="button"
-                className="absolute top-[35%] right-2"
+                className="absolute top-[35%] right-2 text-r-lg"
                 onClick={() =>
                   changePasswordVisibility("password")
                 }
@@ -235,7 +237,7 @@ const ProfilePage = () => {
           <div className="flex flex-col justify-start gap-2">
             <label
               htmlFor="signupConfirmPassword"
-              className="text-2xl"
+              className="text-r-2xl"
             >
               New Password
             </label>
@@ -243,7 +245,7 @@ const ProfilePage = () => {
               <input
                 type="password"
                 id="signupConfirmPassword"
-                className="input input-bordered"
+                className="w-full input input-bordered text-r-xl"
                 {...register("newPassword", {
                   minLength: {
                     value: 6,
@@ -254,7 +256,7 @@ const ProfilePage = () => {
               />
               <button
                 type="button"
-                className="absolute top-[35%] right-2"
+                className="absolute top-[35%] right-2 text-r-lg"
                 onClick={() =>
                   changePasswordVisibility(
                     "confirmPassword"
@@ -277,7 +279,7 @@ const ProfilePage = () => {
             )}
           </div>
         </div>
-        <button className="w-full mt-5 text-xl btn btn-outline">
+        <button className="w-full mt-5 text-r-xl btn btn-outline">
           Update
         </button>
       </form>

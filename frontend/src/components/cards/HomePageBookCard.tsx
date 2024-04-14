@@ -113,13 +113,13 @@ const HomePageBookCard = ({ data }: HomePageBookCard) => {
             height={100}
           />
         </figure>
-        <div className="items-center p-1 text-center card-body">
-          <h2 className="text-xl card-title lg:text-2xl">
+        <div className="grid items-center justify-center grid-cols-1 grid-rows-5 gap-4 p-1 text-center">
+          <h2 className="text-r-xl">
             {data[index].title.length > 50
               ? data[index].title.slice(0, 50) + "..."
               : data[index].title}
           </h2>
-          <p className="flex text-xl md:text-2xl lg:text-3xl">
+          <p className="flex justify-center mt-10 text-r-xl">
             {Array.from(
               { length: data[index].stars },
               (_item, index) => (
@@ -127,14 +127,14 @@ const HomePageBookCard = ({ data }: HomePageBookCard) => {
               )
             )}
           </p>
-          <p className="text-xl md:text-2xl lg:text-3xl">
+          <p className="text-r-xl">
             by {data[index].author}
           </p>
-          <p className="text-xl md:text-2xl lg:text-3xl">
+          <p className="text-r-xl">
             ${data[index].price}
           </p>
 
-          <button className="text-2xl md:text-3xl w-fit btn btn-outline lg:text-4xl">
+          <button className="h-fit btn btn-outline text-r-2xl">
             <ViewDetailsButton
               bookTitle={`${data[index].title}`}
               bookId={data[index]._id}
@@ -148,7 +148,7 @@ const HomePageBookCard = ({ data }: HomePageBookCard) => {
 
   return (
     <section className="w-full carousel ">
-      <div className=" w-full p-2 shadow-xl min-h-[500px] md:min-h-[600px] lg:min-h-[700px] card bg-base-300 relative ">
+      <div className=" w-full p-2 shadow-xl min-h-[500px] md:min-h-[700px] lg:min-h-[700px] card bg-base-300 relative ">
         <AnimatePresence>
           <motion.div
             variants={slideVariants}

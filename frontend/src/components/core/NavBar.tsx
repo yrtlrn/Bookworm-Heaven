@@ -174,7 +174,7 @@ const NavBar = () => {
         <section>
           <button>
             <a
-              className="flex flex-col items-center text-xl md:text-2xl lg:text-3xl"
+              className="flex flex-col items-center text-r-xl "
               href="/"
             >
               <img
@@ -201,10 +201,10 @@ const NavBar = () => {
             >
               <FaShoppingCart
                 id="#CartButton"
-                className="text-4xl md:text-5xl lg:text-6xl"
+                className="text-r-4xl "
               />
             </button>
-            <span className="absolute bottom-0 left-0 rounded-lg  w-[20px] text-lg md:text-xl lg:text-2xl">
+            <span className="absolute bottom-0 left-0 rounded-lg  w-[20px] text-r-lg  ">
               {cartItems.reduce(
                 (total, amount) =>
                   total + amount.itemQuantity,
@@ -255,7 +255,7 @@ const NavBar = () => {
                   type: "Most Popular",
                 })}`,
               }}
-              className="text-xl link-hover md:text-2xl lg:text-3xl"
+              className="text-r-xl link-hover "
             >
               Most Popular
             </Link>
@@ -266,7 +266,7 @@ const NavBar = () => {
                   type: "Trending",
                 })}`,
               }}
-              className="text-xl link-hover md:text-2xl lg:text-3xl"
+              className="text-r-xl link-hover "
             >
               Trending
             </Link>
@@ -277,7 +277,7 @@ const NavBar = () => {
                   type: "Latest",
                 })}`,
               }}
-              className="text-xl link-hover md:text-2xl lg:text-3xl"
+              className="text-r-xl link-hover "
             >
               Latest
             </Link>
@@ -287,28 +287,22 @@ const NavBar = () => {
             {isAuth ? (
               <>
                 <Link
-                  to="/user/orders"
-                  className="text-xl link-hover md:text-2xl lg:text-3xl"
-                >
-                  Your Orders
-                </Link>
-                <Link
                   to="/user/books"
-                  className="text-xl link-hover md:text-2xl lg:text-3xl"
+                  className="text-r-xl link-hover "
                 >
                   Saved Books
                 </Link>
 
                 <Link
                   to="/user/setting"
-                  className="text-xl link-hover md:text-2xl lg:text-3xl"
+                  className="text-r-xl link-hover "
                 >
                   Setting
                 </Link>
                 <Link
                   to="/"
                   onClick={() => logoutFun()}
-                  className="text-xl link-hover md:text-2xl lg:text-3xl"
+                  className="text-r-xl link-hover "
                 >
                   Logout
                 </Link>
@@ -317,13 +311,13 @@ const NavBar = () => {
               <>
                 <Link
                   to="/log-in"
-                  className="text-xl link-hover md:text-2xl lg:text-3xl"
+                  className="text-r-xl link-hover "
                 >
                   Login
                 </Link>
                 <Link
                   to="/sign-up"
-                  className="text-xl link-hover md:text-2xl lg:text-3xl"
+                  className="text-r-xl link-hover "
                 >
                   Signup
                 </Link>
@@ -343,14 +337,14 @@ const NavBar = () => {
             className="absolute flex flex-col items-center justify-center w-full gap-3 p-2 bg-base-300 rounded-box h-fit"
           >
             {cartItems.length < 1 ? (
-              <h3 className="text-xl">Cart is Empty</h3>
+              <h3 className="text-r-xl">Cart is Empty</h3>
             ) : (
               cartItems.map((item, index) => (
                 <div
                   key={index}
                   className="grid grid-cols-2 grid-rows-1 gap-3 p-2"
                 >
-                  <h2 className="text-lg md:text-xl">
+                  <h2 className="text-r-lg ">
                     {item.itemName
                       ? item.itemName.length > 50
                         ? item.itemName.slice(0, 50)
@@ -361,7 +355,7 @@ const NavBar = () => {
                     <div className="flex items-center justify-end gap-2 max-[420px]:flex-col">
                       <div className="flex gap-2">
                         <button
-                          className="text-2xl btn max-[375px]:size-2"
+                          className="text-r-2xl btn max-[375px]:size-2"
                           onClick={() =>
                             dispatch(
                               increaseQuantity(item.id!)
@@ -375,10 +369,10 @@ const NavBar = () => {
                           min={0}
                           value={item.itemQuantity}
                           readOnly
-                          className=" text-center w-[30%] input text-xl "
+                          className=" text-center w-[30%] input text-r-xl "
                         />
                         <button
-                          className="text-2xl btn max-[375px]:size-2"
+                          className="text-r-2xl btn max-[375px]:size-2"
                           onClick={() =>
                             dispatch(
                               decreaseQuantity(item.id!)
@@ -388,7 +382,7 @@ const NavBar = () => {
                           -
                         </button>
                       </div>
-                      <p className="text-lg md:text-xl text-end">
+                      <p className="text-r-lg text-end">
                         $
                         {(
                           item.itemQuantity! *
@@ -402,11 +396,11 @@ const NavBar = () => {
             )}
 
             <div className="flex items-center justify-end w-full gap-2 p-2 border-t-2">
-              <p className="text-2xl">
+              <p className="text-r-2xl">
                 ${cartTotal?.toFixed(2)}{" "}
               </p>
               <button
-                className="text-2xl btn btn-outline"
+                className="text-r-2xl btn btn-outline"
                 onClick={() => {
                   setCartOpen(false);
                   navigate("/user/checkout");

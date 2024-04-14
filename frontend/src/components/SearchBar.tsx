@@ -40,32 +40,32 @@ const SearchBar = () => {
     <form className="grid w-[80%] grid-cols-3 grid-rows-3 p-2 m-1 text-center absCenter rounded-box bg-base-200 gap-3">
       <label
         htmlFor="title"
-        className="flex items-center justify-center text-xl md:text-2xl lg:text-3xl"
+        className="flex items-center justify-center text-r-xl "
       >
         Title
       </label>
       <input
         id="title"
-        className="col-span-2 mt-1 text-xl text-center input input-bordered md:2xl lg:text-3xl"
+        className="col-span-2 mt-1 text-r-xl text-center input input-bordered md:2xl "
         value={titleValue}
         onChange={(e) => setTitleValue(e.target.value)}
       />
       <label
         htmlFor="author"
-        className="flex items-center justify-center text-xl md:text-2xl lg:text-3xl"
+        className="flex items-center justify-center text-r-xl "
       >
         Author
       </label>
       <input
         id="author"
-        className="col-span-2 mt-1 text-xl text-center input input-bordered md:text-2xl lg:text-3xl"
+        className="col-span-2 mt-1 text-r-xl text-center input input-bordered "
         value={authorValue}
         onChange={(e) => setAuthorValue(e.target.value)}
       />
       <button
         type="submit"
         onClick={(e) => searchFun(e)}
-        className="col-span-3 text-xl btn btn-outline md:text-2xl lg:text-3xl"
+        className="col-span-3 text-r-xl btn btn-outline "
       >
         Search
       </button>

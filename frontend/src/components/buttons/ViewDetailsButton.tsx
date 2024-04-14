@@ -19,7 +19,8 @@ const ViewDetailsButton = ({
           "-"
         )}`,
       }}
-      state={{bookId}}
+      state={{ bookId }}
+      className="flex items-center justify-center w-full h-full"
     >
       {text}
     </Link>

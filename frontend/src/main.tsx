@@ -29,7 +29,6 @@ import BookViewPage from "./page/books/BookViewPage.tsx";
 import BookDetailPage from "./page/books/BookDetailPage.tsx";
 import SavedBooksPage from "./page/books/SavedBooksPage.tsx";
 import NotFoundPage from "./page/NotFoundPage.tsx";
-import CheckoutPage from "./page/books/CheckoutPage.tsx";
 
 // Other
 
@@ -54,7 +53,7 @@ const router = createBrowserRouter(
         <Route path="setting" element={<SettingPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="books" element={<SavedBooksPage />} />
-        <Route path="checkout" element={<CheckoutPage />} />
+        
       </Route>
 
       {/* Not Found Page */}

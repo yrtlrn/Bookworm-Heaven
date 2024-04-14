@@ -1,6 +1,6 @@
 import { BiStar } from "react-icons/bi";
 import { BookProps } from "../../../../backend/models/bookModel";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDeleteBookFromUserMutation } from "../../app/api/bookApi";
 import { Types } from "mongoose";
 import { knownError } from "../../types/errorTypes";
@@ -37,7 +37,7 @@ const SavedBookCard = ({ data }: SavedBookCard) => {
   }, [isLoading]);
 
   return (
-    <section className="grid grid-cols-2 gap-5 m-2 border gird-rows-1">
+    <section className="grid grid-cols-2 grid-rows-1 gap-5 m-2 border">
       <div className="flex items-center justify-center m-3">
         <figure>
           <img
@@ -49,8 +49,8 @@ const SavedBookCard = ({ data }: SavedBookCard) => {
         </figure>
       </div>
       <div className="flex flex-col gap-3 m-3">
-        <h1>{data.title}</h1>
-        <p className="flex">
+        <h1 className="text-r-lg">{data.title}</h1>
+        <p className="flex text-r-lg">
           {Array.from(
             { length: data.stars },
             (_item, index) => (
@@ -58,23 +58,25 @@ const SavedBookCard = ({ data }: SavedBookCard) => {
             )
           )}
         </p>
-        <p>
+        <p className="text-r-lg">
           Reviews:{" "}
           {data.reviews
             .toString()
             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         </p>
-        <p>${data.price}</p>
-        <button className="btn">
+        <p className="text-r-lg">${data.price}</p>
+        <button className=" text-r-lg btn btn-outline">
           <ViewDetailsButton
             bookTitle={`${data.title}`}
             bookId={data._id}
             text="More Details"
           />
         </button>
-        <button className="btn">Add To Cart</button>
+        <button className="btn btn-outline text-r-lg">
+          Add To Cart
+        </button>
         <button
-          className="btn"
+          className="btn btn-outline text-r-lg"
           onClick={() => removeBook(data._id)}
         >
           Remove

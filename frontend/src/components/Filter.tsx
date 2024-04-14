@@ -80,7 +80,7 @@ const Filter = () => {
 
   return (
     <section className="p-2 mt-2 border-2 border-white bg-base-200">
-      <h2 className="text-2xl font-bold text-center md:text-3xl">
+      <h2 className="font-bold text-center text-r-2xl">
         Filter
       </h2>
       <form
@@ -89,11 +89,11 @@ const Filter = () => {
       >
         {/* Star Inputs */}
         <div className="grid grid-cols-3 grid-rows-1 gap-2">
-          <h3 className="flex items-center justify-center text-xl md:text-2xl lg:text-3xl">
+          <h3 className="flex items-center justify-center text-r-xl">
             Stars
           </h3>
           <input
-            className="input input-bordered md:text-xl lg:text-2xl"
+            className="input input-bordered text-r-lg"
             type="number"
             min={0}
             max={5}
@@ -102,7 +102,7 @@ const Filter = () => {
             {...register("starMin")}
           />
           <input
-            className="input input-bordered md:text-xl lg:text-2xl"
+            className="input input-bordered text-r-lg"
             type="number"
             min={0}
             max={5}
@@ -133,7 +133,7 @@ const Filter = () => {
 
         {/* Price Inputs */}
         <div className="grid grid-cols-3 grid-rows-1 gap-2">
-          <h3 className="flex items-center justify-center text-xl md:text-2xl lg:text-3xl">
+          <h3 className="flex items-center justify-center text-r-xl ">
             Price
           </h3>
           <div className="relative">
@@ -141,7 +141,7 @@ const Filter = () => {
               $
             </span>
             <input
-              className="w-full input input-bordered md:text-xl lg:text-2xl"
+              className="w-full input input-bordered text-r-lg"
               type="number"
               min={0}
               step={0.01}
@@ -154,7 +154,7 @@ const Filter = () => {
               $
             </span>
             <input
-              className="w-full input input-bordered md:text-xl lg:text-2xl"
+              className="w-full input input-bordered text-r-lg"
               type="number"
               min={0}
               step={0.01}
@@ -185,18 +185,18 @@ const Filter = () => {
 
         {/* Reviews Input */}
         <div className="grid grid-cols-3 grid-rows-1 gap-2">
-          <h3 className="flex items-center justify-center text-xl md:text-2xl lg:text-3xl">
+          <h3 className="flex items-center justify-center text-r-xl ">
             Reviews
           </h3>
           <input
-            className="input input-bordered md:text-xl lg:text-2xl"
+            className="input input-bordered text-r-lg"
             type="number"
             min={0}
             placeholder="Min"
             {...register("reviewMin")}
           />
           <input
-            className="input input-bordered md:text-xl lg:text-2xl"
+            className="input input-bordered text-r-lg"
             type="number"
             min={0}
             placeholder="Max"
@@ -224,11 +224,11 @@ const Filter = () => {
         )}
         {/* Type Inputs */}
         <div className="grid grid-cols-3 grid-rows-1 gap-2">
-          <h3 className="flex items-center justify-center text-xl md:text-2xl lg:text-3xl">
+          <h3 className="flex items-center justify-center text-r-xl ">
             Type
           </h3>
           <select
-            className="col-span-2 text-xl select select-bordered md:text-2xl lg:text-3xl"
+            className="col-span-2 text-r-xl select select-bordered "
             {...register("typeValue")}
           >
             <option> </option>
@@ -239,7 +239,7 @@ const Filter = () => {
         </div>
 
         <button
-          className="col-span-3 text-xl btn-outline btn bg-base-100 md:text-2xl lg:text-3xl"
+          className="col-span-3 text-r-xl btn-outline btn bg-base-100 "
           type="submit"
         >
           Filter Books

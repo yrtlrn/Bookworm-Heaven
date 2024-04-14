@@ -1,10 +1,9 @@
 import {
-  PayloadAction,
   createSlice,
 } from "@reduxjs/toolkit";
 import { UserApi } from "../api/userApi";
 import { RootState } from "../store";
-import { useAppDispatch } from "../hooks/hook";
+
 import { cartItems } from "./cartSlice";
 
 const initialState: {
@@ -67,6 +66,7 @@ const userSlice = createSlice({
       UserApi.endpoints.deleteUser.matchFulfilled,
       (state) => {
         state.authorized = false;
+        localStorage.removeItem("cart");
       }
     );
   },

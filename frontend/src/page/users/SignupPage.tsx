@@ -1,12 +1,9 @@
 import { useForm } from "react-hook-form";
-import {
-  usePostSignupUserMutation,
-} from "../../app/api/userApi";
+import { usePostSignupUserMutation } from "../../app/api/userApi";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 
 export type SignupPageProps = {
   firstName: string;
@@ -25,9 +22,6 @@ const SignupPage = () => {
   } = useForm<SignupPageProps>();
 
   const navigate = useNavigate();
-
-
-
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] =
@@ -79,13 +73,13 @@ const SignupPage = () => {
 
   return (
     <section className="flex flex-col items-center justify-center gap-5 mt-10">
-      <h1 className="text-3xl font-bold">Sign Up</h1>
+      <h1 className="font-bold text-r-3xl">Sign Up</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-5">
           <div className="flex flex-col justify-start gap-2">
             <label
               htmlFor="signupFirstName"
-              className="text-2xl"
+              className="text-r-2xl"
             >
               First Name
             </label>
@@ -121,7 +115,7 @@ const SignupPage = () => {
           <div className="flex flex-col justify-start gap-2">
             <label
               htmlFor="signupLastName"
-              className="text-2xl"
+              className="text-r-2xl"
             >
               Last Name
             </label>
@@ -157,7 +151,7 @@ const SignupPage = () => {
           <div className="flex flex-col justify-start gap-2">
             <label
               htmlFor="signupEmail"
-              className="text-2xl"
+              className="text-r-2xl"
             >
               Email
             </label>
@@ -184,7 +178,7 @@ const SignupPage = () => {
           <div className="flex flex-col justify-start gap-2">
             <label
               htmlFor="signupPassword"
-              className="text-2xl"
+              className="text-r-2xl"
             >
               Password
             </label>
@@ -192,7 +186,7 @@ const SignupPage = () => {
               <input
                 type="password"
                 id="signupPassword"
-                className="input input-bordered"
+                className="w-full input input-bordered"
                 {...register("password", {
                   required: {
                     value: true,
@@ -207,7 +201,7 @@ const SignupPage = () => {
               />
               <button
                 type="button"
-                className="absolute top-[35%] right-2"
+                className="absolute top-[35%] right-2 text-r-lg"
                 onClick={() =>
                   changePasswordVisibility("password")
                 }
@@ -226,7 +220,7 @@ const SignupPage = () => {
           <div className="flex flex-col justify-start gap-2">
             <label
               htmlFor="signupConfirmPassword"
-              className="text-2xl"
+              className="text-r-2xl"
             >
               Confirm Password
             </label>
@@ -234,7 +228,7 @@ const SignupPage = () => {
               <input
                 type="password"
                 id="signupConfirmPassword"
-                className="input input-bordered"
+                className="w-full input input-bordered"
                 {...register("confirmPassword", {
                   required: {
                     value: true,
@@ -252,7 +246,7 @@ const SignupPage = () => {
               />
               <button
                 type="button"
-                className="absolute top-[35%] right-2"
+                className="absolute top-[35%] right-2 text-r-lg"
                 onClick={() =>
                   changePasswordVisibility(
                     "confirmPassword"
@@ -275,12 +269,12 @@ const SignupPage = () => {
             )}
           </div>
         </div>
-        <button className="w-full mt-5 text-xl btn btn-outline">
+        <button className="w-full mt-5 text-r-xl btn btn-outline">
           Sign Up
         </button>
       </form>
 
-      <aside>
+      <aside className="text-r-base">
         Already have an account?{" "}
         <span className="link">
           <a href="/log-in">Log In</a>

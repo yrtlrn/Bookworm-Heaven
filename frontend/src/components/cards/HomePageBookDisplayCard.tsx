@@ -40,7 +40,7 @@ const HomePageBookDisplayCard = ({
 
   return (
     <section>
-      <h1 className="mt-4 text-3xl font-bold text-center md:text-4xl lg:text-5xl">
+      <h1 className="mt-4 font-bold text-center text-r-3xl ">
         {title}
       </h1>
       {trendingBooks}

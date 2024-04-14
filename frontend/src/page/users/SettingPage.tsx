@@ -18,8 +18,8 @@ const SettingPage = () => {
     useState(false);
 
   const deleteDropDownVariants = {
-    open: { y: 5 },
-    close: { y: -300 },
+    open: { y: -40 },
+    close: { y: -1000 },
   };
 
   const [
@@ -57,24 +57,18 @@ const SettingPage = () => {
     name = `Hello ${getProfileData.data.firstName}`;
   }
   return (
-    <section className="relative flex flex-col justify-center h-screen">
-      <h1 className="mt-20 text-5xl text-center ">
+    <section className="relative flex flex-col justify-center w-full absCenter">
+      <h1 className="text-center text-r-5xl">
         {name}
       </h1>
       <div className="flex flex-col items-center gap-10 p-5 m-3 rounded-md bg-base-300">
         <Link to="/user/profile" className="w-full">
-          <button className="w-full text-xl btn hover:bg-slate-600">
+          <button className="w-full text-r-xl btn hover:bg-slate-600">
             Change Profile Info
           </button>
         </Link>
-        <Link to="/user/orders" className="w-full">
-          <button className="w-full text-xl btn hover:bg-slate-600">
-            Your Orders
-          </button>
-        </Link>
-
         <button
-          className="w-full text-xl btn hover:bg-slate-600"
+          className="w-full text-r-xl btn hover:bg-slate-600"
           onClick={() => setDeleteDropDown((prev) => !prev)}
         >
           Delete Account
@@ -82,20 +76,20 @@ const SettingPage = () => {
       </div>
       <motion.div
         animate={deleteDropDown ? "open" : "close"}
-        initial={{ y: -300 }}
+        initial={{ y: -1000 }}
         variants={deleteDropDownVariants}
-        className="absolute top-10 w-full p-2 bg-base-200 text-center h-[30%] rounded-lg flex flex-col  justify-center max-[420px]:h-[27%]"
+        className="absolute top-10 w-full p-2 bg-base-200 text-center h-[100%] rounded-lg flex flex-col  justify-center max-[420px]:h-[27%] "
       >
-        <h3 className="text-3xl">Delete Account?</h3>
+        <h3 className="text-r-3xl">Delete Account?</h3>
         <div className="flex gap-2 p-2 max-[420px]:flex-col max-[420px]:items-center">
           <button
-            className="btn hover:bg-slate-600 bg-base-100 w-[50%] text-2xl"
+            className="btn hover:bg-slate-600 bg-base-100 w-[50%] text-r-2xl"
             onClick={() => deleteUserFun()}
           >
             Confirm
           </button>
           <button
-            className="btn hover:bg-slate-600 bg-base-100 w-[50%] text-2xl"
+            className="btn hover:bg-slate-600 bg-base-100 w-[50%] text-r-2xl"
             onClick={() => setDeleteDropDown(false)}
           >
             Cancel
